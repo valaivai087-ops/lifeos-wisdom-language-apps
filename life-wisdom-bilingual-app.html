@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生智慧生成系統｜Life Wisdom Generation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --navy: #1A2B5F;
+            --gold: #C9960C;
+            --teal: #0A7A72;
+            --white: #FFFFFF;
+            --light: #F9F7F4;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
+            background: var(--white);
+            color: var(--navy);
+            line-height: 1.8;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(135deg, var(--navy), #2D3E7F);
+            color: var(--white);
+            padding: 25px;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.15);
+        }
+        
+        .sidebar-logo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        
+        .nav-item {
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255,255,255,0.15);
+            border-left-color: var(--gold);
+        }
+        
+        .nav-item.active {
+            background: var(--gold);
+            color: var(--navy);
+            font-weight: bold;
+            border-left-color: var(--white);
+        }
+        
+        .main {
+            margin-left: 300px;
+            padding: 40px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            color: var(--navy);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201,150,12,0.3);
+        }
+        
+        .search-box {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 12px rgba(201,150,12,0.4);
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--teal);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px 0;
+        }
+        
+        .card {
+            background: var(--light);
+            border-left: 4px solid var(--gold);
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            transform: translateX(4px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .card-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--navy);
+        }
+        
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--teal);
+        }
+        
+        .card-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: var(--gold);
+            color: var(--navy);
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .btn-small:hover {
+            transform: scale(1.05);
+        }
+        
+        .card-content {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(26,43,95,0.1);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--navy);
+        }
+        
+        .card-content.visible {
+            display: block;
+        }
+        
+        .modes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+        
+        .mode-box {
+            padding: 12px;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid var(--teal);
+        }
+        
+        .mode-label {
+            font-weight: bold;
+            color: var(--teal);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .mode-items {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--navy);
+        }
+        
+        .mode-items li {
+            margin-bottom: 4px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(201,150,12,0.1), rgba(10,122,114,0.1));
+            border-left: 4px solid var(--gold);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        
+        .metric-box {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin: 5px 5px 5px 0;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                padding: 15px;
+            }
+            
+            .main {
+                margin-left: 200px;
+                padding: 20px;
+            }
+            
+            .modes {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                📚 Life OS
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-label">核心系統</div>
+                <div class="nav-item active" onclick="loadSection('intro')">引言與核心</div>
+                <div class="nav-item" onclick="loadSection('struct_01')">01｜目標函數</div>
+                <div class="nav-item" onclick="loadSection('struct_02')">02｜母體資料</div>
+                <div class="nav-item" onclick="loadSection('struct_03')">03｜結構樹</div>
+                <div class="nav-item" onclick="loadSection('struct_04')">04｜能力節點</div>
+                <div class="nav-item" onclick="loadSection('struct_05')">05｜錯誤診斷</div>
+                <div class="nav-item" onclick="loadSection('struct_06')">06｜補強任務</div>
+                <div class="nav-item" onclick="loadSection('struct_07')">07｜回寫機制</div>
+                <div class="nav-item" onclick="loadSection('struct_08')">08｜壓力測試</div>
+                <div class="nav-item" onclick="loadSection('struct_09')">09｜更新引擎</div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-label">應用指南</div>
+                <div class="nav-item" onclick="loadSection('navigation')">高維導航系統</div>
+                <div class="nav-item" onclick="loadSection('cases')">低维VS高维案例</div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="header">
+                <h1>人生智慧生成系統</h1>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="toggleAllCards()">展開全部</button>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 搜尋/Search..." onkeyup="filterContent(this.value)">
+            </div>
+            
+            <div id="content-area"></div>
+        </div>
+    </div>
+    
+    <script>
+        const contentData = {
+            intro: {
+                title: '人生智慧生成系統｜引言',
+                titleEn: 'Life Wisdom Generation System - Introduction',
+                content: `如果你想建立一套真正的人生作業系統，你需要九大結構。
+
+人生也需要目標函數——決定方向
+人生也需要母體資料——決定資訊品質
+人生也需要結構樹——決定理解深度
+人生也需要能力節點——決定執行能力
+人生也需要錯誤診斷——決定突破瓶頸
+人生也需要補強任務——決定改善速度
+人生也需要回寫機制——決定經驗是否變能力
+人生也需要壓力測試——決定模型是否真實有效
+人生也需要更新引擎——決定生命是否持續進化
+
+真正的高維人生，不是一直累積知識，而是建立九大結構樹。`,
+                contentEn: `If you want to build a true life operating system, you need nine major structures.
+
+Life needs Goal Function - determines direction
+Life needs Knowledge Base - determines information quality
+Life needs Structure Trees - determines understanding depth
+Life needs Capability Nodes - determines execution ability
+Life needs Error Diagnosis - determines breakthrough capability
+Life needs Improvement Tasks - determines improvement speed
+Life needs Feedback Writing - determines if experience becomes capability
+Life needs Stress Tests - determines if models truly work
+Life needs Update Engine - determines if life continuously evolves
+
+True high-dimensional living is not about accumulating knowledge forever, but about building the nine major structure trees.`,
+                warnings: [
+                    { zh: '如果沒有目標函數', en: 'Without goal function', result: '會被外界牽著走 | will be pulled around by environment' },
+                    { zh: '如果沒有母體資料', en: 'Without knowledge base', result: '會用狹窄經驗判斷世界 | will judge world with narrow experience' },
+                    { zh: '如果沒有結構樹', en: 'Without structure trees', result: '會把所有問題混在一起 | will mix all problems together' },
+                    { zh: '如果沒有能力節點', en: 'Without capability nodes', result: '會一直卡在同樣地方 | will be stuck in the same place' },
+                    { zh: '如果沒有錯誤診斷', en: 'Without error diagnosis', result: '會把失敗歸因成命運 | will attribute failure to fate' },
+                    { zh: '如果沒有補強任務', en: 'Without improvement tasks', result: '知道問題也不會改 | knowing the problem won\'t change it' },
+                    { zh: '如果沒有回寫機制', en: 'Without feedback writing', result: '經歷再多也不會成長 | no growth no matter how much experience' },
+                    { zh: '如果沒有壓力測試', en: 'Without stress testing', result: '觀點容易自我感覺良好 | viewpoint becomes self-satisfied' },
+                    { zh: '如果沒有更新引擎', en: 'Without update engine', result: '生命被舊模型綁架 | life gets hijacked by old models' }
+                ]
+            },
+            
+            struct_01: {
+                title: '01｜目標函數（Goal Function）',
+                titleEn: 'Goal Function - Determine Direction',
+                question: '核心問題：我要成為什麼樣的人？| Core Question: What kind of person do I want to become?',
+                function: '真正功能：決定人生方向、決策標準與資源配置。| Real Function: Determine life direction, decision standards, and resource allocation.',
+                description: '沒有目標函數，人就容易被環境、情緒、他人期待牽著走。',
+                items: [
+                    { zh: '人生使命', en: 'Life Mission', desc: '我為什麼存在？我要解決什麼問題？', descEn: 'Why do I exist? What problems do I want to solve?' },
+                    { zh: '核心價值', en: 'Core Values', desc: '什麼事情永遠不能妥協？', descEn: 'What principles are non-negotiable?' },
+                    { zh: '人生願景', en: 'Life Vision', desc: '十年後我要成為什麼樣的人？', descEn: 'What kind of person do I want to be in ten years?' },
+                    { zh: '身分定位', en: 'Identity', desc: '我是誰？多個身分如何整合？', descEn: 'Who am I? How do I integrate multiple identities?' },
+                    { zh: '健康目標', en: 'Health Goals', desc: '壽命、睡眠、體能、腦力的目標', descEn: 'Goals for longevity, sleep, fitness, mental clarity' },
+                    { zh: '家庭目標', en: 'Family Goals', desc: '配偶、孩子、親子關係的願景', descEn: 'Vision for spouse, children, family relationships' },
+                    { zh: '學習目標', en: 'Learning Goals', desc: '三年五年要掌握什麼知識？', descEn: 'What knowledge should I master in 3-5 years?' },
+                    { zh: '財富目標', en: 'Wealth Goals', desc: '被動收入、資產配置、經濟自由', descEn: 'Passive income, asset allocation, financial freedom' },
+                    { zh: '工作目標', en: 'Career Goals', desc: '職位、影響力、專業地位', descEn: 'Position, influence, professional standing' },
+                    { zh: '關係目標', en: 'Relationship Goals', desc: '深度友誼、社群、人脈品質', descEn: 'Deep friendships, community, quality network' },
+                    { zh: '社會貢獻', en: 'Social Contribution', desc: '留下什麼價值給社會？', descEn: 'What value do I want to leave for society?' },
+                    { zh: '靈性成長', en: 'Spiritual Growth', desc: '信念系統、人生意義的探索', descEn: 'Exploration of belief systems and life meaning' }
+                ]
+            },
+            
+            struct_02: {
+                title: '02｜母體資料（Knowledge Base）',
+                titleEn: 'Knowledge Base - Determine Information Quality',
+                question: '核心問題：我用什麼理解世界？| Core Question: What knowledge shapes my worldview?',
+                function: '真正功能：決定思維模型、判斷品質、預測準確度。| Real Function: Determine thinking models, judgment quality, prediction accuracy.',
+                description: '沒有母體資料，會用狹窄經驗判斷世界。',
+                items: [
+                    { zh: '知識', en: 'Knowledge', desc: '系統化的理論和原理', descEn: 'Systematized theories and principles' },
+                    { zh: '閱讀', en: 'Reading', desc: '通過書籍開闊視野', descEn: 'Expand perspective through books' },
+                    { zh: '課程', en: 'Courses', desc: '結構化的學習專案', descEn: 'Structured learning programs' },
+                    { zh: '人生經驗', en: 'Personal Experience', desc: '自己親身經歷的教訓', descEn: 'Lessons from my own experiences' },
+                    { zh: '他人經驗', en: 'Others\' Experience', desc: '學習他人的成敗案例', descEn: 'Learn from others\' successes and failures' },
+                    { zh: '醫學研究', en: 'Medical Research', desc: '基於科學的健康知識', descEn: 'Science-based health knowledge' },
+                    { zh: '歷史', en: 'History', desc: '從過去的模式學習', descEn: 'Learn from patterns in history' },
+                    { zh: '哲學', en: 'Philosophy', desc: '理解人生的終極問題', descEn: 'Understanding ultimate questions of life' },
+                    { zh: '科學', en: 'Science', desc: '驗證性的系統知識', descEn: 'Verifiable systematic knowledge' },
+                    { zh: 'AI知識', en: 'AI Knowledge', desc: '新時代的思維工具', descEn: 'Thinking tools for new era' },
+                    { zh: '數據', en: 'Data', desc: '量化的事實基礎', descEn: 'Quantified factual basis' },
+                    { zh: '案例資料庫', en: 'Case Library', desc: '解決實際問題的參考', descEn: 'References for solving practical problems' }
+                ]
+            },
+            
+            struct_03: {
+                title: '03｜結構樹（Structure Tree）',
+                titleEn: 'Structure Tree - Determine Understanding Depth',
+                question: '核心問題：我如何建立完整模型？| Core Question: How do I build complete models?',
+                function: '真正功能：建立人生各領域的系統性理解。| Real Function: Build systematic understanding across all life domains.',
+                description: '沒有結構樹，會把所有問題混在一起。',
+                items: [
+                    { zh: '健康系統', en: 'Health System', desc: '營養、運動、睡眠的整合模型', descEn: 'Integrated model of nutrition, exercise, sleep' },
+                    { zh: '學習系統', en: 'Learning System', desc: '如何高效獲取和應用知識', descEn: 'How to efficiently acquire and apply knowledge' },
+                    { zh: '工作系統', en: 'Work System', desc: '從目標到執行的完整流程', descEn: 'Complete process from goals to execution' },
+                    { zh: '家庭系統', en: 'Family System', desc: '親密關係和家庭運作模式', descEn: 'Intimate relationships and family dynamics' },
+                    { zh: '情緒系統', en: 'Emotion System', desc: '情緒識別、理解和管理', descEn: 'Emotion recognition, understanding, management' },
+                    { zh: '財務系統', en: 'Finance System', desc: '收入、支出、投資的平衡', descEn: 'Balance between income, expenses, investments' },
+                    { zh: '信念系統', en: 'Belief System', desc: '價值觀和精神支柱', descEn: 'Values and spiritual foundation' },
+                    { zh: '決策系統', en: 'Decision System', desc: '系統性的決策框架', descEn: 'Systematic decision-making framework' },
+                    { zh: '時間系統', en: 'Time System', desc: '時間規劃和優先順序', descEn: 'Time planning and prioritization' },
+                    { zh: '人際系統', en: 'Relationship System', desc: '溝通和人際互動模式', descEn: 'Communication and interpersonal patterns' },
+                    { zh: '創造系統', en: 'Creation System', desc: '想法轉化為現實的流程', descEn: 'Process of turning ideas into reality' },
+                    { zh: '更新系統', en: 'Update System', desc: '持續進化和優化的機制', descEn: 'Mechanisms for continuous evolution and optimization' }
+                ]
+            },
+            
+            struct_04: {
+                title: '04｜能力節點（Capability Nodes）',
+                titleEn: 'Capability Nodes - Determine Execution Ability',
+                question: '核心問題：真正限制我的是哪個能力？| Core Question: Which capability truly limits me?',
+                function: '真正功能：把知識轉化成可持續產生結果的能力。| Real Function: Transform knowledge into capabilities that consistently produce results.',
+                description: '沒有能力節點，會一直卡在同樣地方。',
+                items: [
+                    { zh: '閱讀能力', en: 'Reading Ability', desc: '快速提取信息的能力', descEn: 'Ability to quickly extract information' },
+                    { zh: '寫作能力', en: 'Writing Ability', desc: '清晰表達思想的能力', descEn: 'Ability to express thoughts clearly' },
+                    { zh: '表達能力', en: 'Expression Ability', desc: '口頭溝通和演講能力', descEn: 'Verbal communication and presentation ability' },
+                    { zh: '思考能力', en: 'Thinking Ability', desc: '深度分析和批判思維', descEn: 'Deep analysis and critical thinking' },
+                    { zh: '提問能力', en: 'Questioning Ability', desc: '提出正確問題的能力', descEn: 'Ability to ask the right questions' },
+                    { zh: '決策能力', en: 'Decision Making', desc: '在不確定中做出選擇', descEn: 'Making choices under uncertainty' },
+                    { zh: 'AI能力', en: 'AI Skills', desc: '利用AI工具增強思考', descEn: 'Using AI tools to enhance thinking' },
+                    { zh: '學習能力', en: 'Learning Ability', desc: '快速掌握新知識', descEn: 'Quickly master new knowledge' },
+                    { zh: '執行能力', en: 'Execution Ability', desc: '把計劃變成現實', descEn: 'Turn plans into reality' },
+                    { zh: '管理能力', en: 'Management Ability', desc: '協調資源和人員', descEn: 'Coordinate resources and people' },
+                    { zh: '銷售能力', en: 'Sales Ability', desc: '說服和影響他人', descEn: 'Persuade and influence others' },
+                    { zh: '溝通能力', en: 'Communication Ability', desc: '有效傳遞信息', descEn: 'Effectively convey messages' },
+                    { zh: '情緒管理', en: 'Emotion Management', desc: '管理自己和他人情緒', descEn: 'Manage own and others\' emotions' },
+                    { zh: '健康管理', en: 'Health Management', desc: '維持身體和心理健康', descEn: 'Maintain physical and mental health' },
+                    { zh: '領導能力', en: 'Leadership', desc: '激勵和帶領團隊', descEn: 'Inspire and lead teams' },
+                    { zh: '創新能力', en: 'Innovation Ability', desc: '產生新想法和解決方案', descEn: 'Generate new ideas and solutions' }
+                ]
+            },
+            
+            struct_05: {
+                title: '05｜錯誤診斷（Error Diagnosis）',
+                titleEn: 'Error Diagnosis - Determine Bottleneck Breakthrough',
+                question: '核心問題：真正限制我的是什麼？| Core Question: What truly limits me?',
+                function: '真正功能：不是找誰錯。而是找真正限制整個系統生成結果的瓶頸。| Real Function: Not finding who\'s wrong, but finding the true bottleneck limiting results.',
+                description: '沒有錯誤診斷，會把失敗歸因成命運。',
+                items: [
+                    { zh: '目標錯誤', en: 'Goal Error', desc: '設定錯誤的目標方向', descEn: 'Set wrong goal direction' },
+                    { zh: '認知偏差', en: 'Cognitive Bias', desc: '思維中的系統性偏見', descEn: 'Systematic bias in thinking' },
+                    { zh: '知識不足', en: 'Knowledge Gap', desc: '缺乏必要的知識基礎', descEn: 'Lack necessary knowledge foundation' },
+                    { zh: '能力不足', en: 'Capability Gap', desc: '實踐能力有差距', descEn: 'Gap in practical abilities' },
+                    { zh: '方法錯誤', en: 'Method Error', desc: '用錯誤的方式解決問題', descEn: 'Using wrong methods to solve problems' },
+                    { zh: '習慣問題', en: 'Habit Issues', desc: '長期形成的不良習慣', descEn: 'Long-formed bad habits' },
+                    { zh: '情緒干擾', en: 'Emotion Interference', desc: '情緒波動影響決策', descEn: 'Emotions affecting decisions' },
+                    { zh: '時間管理', en: 'Time Management', desc: '時間分配不合理', descEn: 'Unreasonable time allocation' },
+                    { zh: '健康限制', en: 'Health Constraints', desc: '身體或心理健康問題', descEn: 'Physical or mental health issues' },
+                    { zh: '環境限制', en: 'Environment Constraints', desc: '外部環境的制約', descEn: 'External environment limitations' },
+                    { zh: '合作問題', en: 'Collaboration Issues', desc: '團隊協作效率低', descEn: 'Low team collaboration efficiency' },
+                    { zh: '模型錯誤', en: 'Model Error', desc: '對世界的理解有偏差', descEn: 'Bias in understanding the world' }
+                ]
+            },
+            
+            struct_06: {
+                title: '06｜補強任務（Improvement Tasks）',
+                titleEn: 'Improvement Tasks - Determine Improvement Speed',
+                question: '核心問題：下一步要補什麼？| Core Question: What should I strengthen next?',
+                function: '真正功能：把診斷結果轉化成可執行的更新任務。| Real Function: Transform diagnosis results into executable update tasks.',
+                description: '沒有補強任務，知道問題也不會改。',
+                items: [
+                    { zh: '補知識', en: 'Knowledge Supplement', desc: '學習必要的理論和原理', descEn: 'Learn necessary theories and principles' },
+                    { zh: '補能力', en: 'Capability Building', desc: '通過練習提升實踐能力', descEn: 'Improve practical abilities through practice' },
+                    { zh: '補工具', en: 'Tool Enhancement', desc: '引入或優化工作工具', descEn: 'Introduce or optimize work tools' },
+                    { zh: '補習慣', en: 'Habit Formation', desc: '建立支持目標的習慣', descEn: 'Build habits that support goals' },
+                    { zh: '補健康', en: 'Health Improvement', desc: '改善營養和運動', descEn: 'Improve nutrition and exercise' },
+                    { zh: '補睡眠', en: 'Sleep Quality', desc: '確保充足高品質睡眠', descEn: 'Ensure sufficient quality sleep' },
+                    { zh: '補閱讀', en: 'Reading Practice', desc: '擴大閱讀廣度和深度', descEn: 'Expand reading breadth and depth' },
+                    { zh: '補實作', en: 'Practical Experience', desc: '通過實踐學習和驗證', descEn: 'Learn and verify through practice' },
+                    { zh: '補反思', en: 'Reflection', desc: '定期反思和總結經驗', descEn: 'Regularly reflect and summarize experiences' },
+                    { zh: '補教練', en: 'Coaching', desc: '尋求導師和專家指導', descEn: 'Seek mentor and expert guidance' },
+                    { zh: '補合作', en: 'Collaboration', desc: '建立有效的團隊協作', descEn: 'Build effective team collaboration' },
+                    { zh: '補挑戰', en: 'Challenge', desc: '主動面對具有挑戰的任務', descEn: 'Actively take on challenging tasks' }
+                ]
+            },
+            
+            struct_07: {
+                title: '07｜回寫機制（Feedback Writing）',
+                titleEn: 'Feedback Writing - Experience to Capability',
+                question: '核心問題：如何把經驗變能力？| Core Question: How do I turn experience into capability?',
+                function: '真正功能：把一次經驗，轉化成可重複使用、可持續更新的能力。| Real Function: Convert single experience into reusable, continuously updatable capabilities.',
+                description: '沒有回寫機制，經歷再多也不會成長。',
+                items: [
+                    { zh: '每日反思', en: 'Daily Reflection', desc: '每天記錄學習和成長', descEn: 'Record daily learning and growth' },
+                    { zh: '錯題整理', en: 'Error Review', desc: '系統整理和分析錯誤', descEn: 'Systematically organize and analyze errors' },
+                    { zh: '成功整理', en: 'Success Analysis', desc: '總結成功的要素和模式', descEn: 'Summarize success factors and patterns' },
+                    { zh: '失敗整理', en: 'Failure Analysis', desc: '深度分析失敗的原因', descEn: 'Deeply analyze causes of failure' },
+                    { zh: 'AI分析', en: 'AI Analysis', desc: '用AI協助深度分析經驗', descEn: 'Use AI to assist deep analysis' },
+                    { zh: '日誌', en: 'Journaling', desc: '記錄思想和感受', descEn: 'Record thoughts and feelings' },
+                    { zh: '知識卡片', en: 'Knowledge Cards', desc: '製作可重用的知識卡', descEn: 'Create reusable knowledge cards' },
+                    { zh: 'Anki', en: 'Spaced Repetition', desc: '使用間隔重複鞏固學習', descEn: 'Use spaced repetition for consolidation' },
+                    { zh: 'SOP更新', en: 'SOP Update', desc: '更新標準操作流程', descEn: 'Update standard operating procedures' },
+                    { zh: '能力地圖更新', en: 'Capability Map Update', desc: '更新個人能力清單', descEn: 'Update personal capability inventory' }
+                ]
+            },
+            
+            struct_08: {
+                title: '08｜壓力測試（Stress Test）',
+                titleEn: 'Stress Test - Verify Model Effectiveness',
+                question: '核心問題：模型真的有效嗎？| Core Question: Does the model really work?',
+                function: '真正功能：讓理論離開大腦。進入真實世界接受驗證。| Real Function: Move theory out of brain into real-world validation.',
+                description: '沒有壓力測試，觀點容易自我感覺良好。',
+                items: [
+                    { zh: '考試', en: 'Examination', desc: '通過考試檢驗知識', descEn: 'Verify knowledge through examination' },
+                    { zh: '比賽', en: 'Competition', desc: '在競爭中檢驗能力', descEn: 'Test abilities in competition' },
+                    { zh: '演講', en: 'Public Speaking', desc: '通過演講檢驗表達能力', descEn: 'Test expression through public speaking' },
+                    { zh: '教學', en: 'Teaching', desc: '教別人驗證自己理解', descEn: 'Verify understanding by teaching others' },
+                    { zh: '創業', en: 'Entrepreneurship', desc: '在創業中檢驗商業模型', descEn: 'Test business models through entrepreneurship' },
+                    { zh: '市場驗證', en: 'Market Validation', desc: '用真實市場反饋檢驗', descEn: 'Validate with real market feedback' },
+                    { zh: '收入', en: 'Income', desc: '能力轉化為經濟收入', descEn: 'Convert abilities into income' },
+                    { zh: '健康檢查', en: 'Health Check', desc: '定期檢驗身體狀況', descEn: 'Regularly check health status' },
+                    { zh: '危機事件', en: 'Crisis Events', desc: '在危機中檢驗應對能力', descEn: 'Test coping abilities in crisis' },
+                    { zh: '陌生環境', en: 'New Environment', desc: '在陌生環境中應用知識', descEn: 'Apply knowledge in unfamiliar environments' },
+                    { zh: 'AI挑戰', en: 'AI Challenge', desc: '用AI提出新的挑戰', descEn: 'Use AI to create new challenges' },
+                    { zh: '跨領域應用', en: 'Cross-discipline', desc: '在不同領域應用知識', descEn: 'Apply knowledge across different domains' }
+                ]
+            },
+            
+            struct_09: {
+                title: '09｜更新引擎（Update Engine）',
+                titleEn: 'Update Engine - Continuous Evolution',
+                question: '核心問題：如何持續進化？| Core Question: How do I keep evolving?',
+                function: '真正功能：建立一套可以永遠更新答案、永遠修正模型、永遠提升預測能力的生命更新系統。| Real Function: Build a system that can forever update answers, correct models, and improve prediction ability.',
+                description: '沒有更新引擎，生命最後會被舊模型綁架。',
+                items: [
+                    { zh: '閱讀更新', en: 'Reading Update', desc: '通過閱讀不斷更新知識', descEn: 'Continuously update knowledge through reading' },
+                    { zh: 'AI更新', en: 'AI Update', desc: '利用AI的新能力進化', descEn: 'Evolve using AI\'s new capabilities' },
+                    { zh: '研究更新', en: 'Research Update', desc: '跟進最新的研究發現', descEn: 'Follow latest research discoveries' },
+                    { zh: '新證據', en: 'New Evidence', desc: '接受和整合新的證據', descEn: 'Accept and integrate new evidence' },
+                    { zh: '新工具', en: 'New Tools', desc: '採用和優化新工具', descEn: 'Adopt and optimize new tools' },
+                    { zh: '新模型', en: 'New Models', desc: '學習和應用新的理論模型', descEn: 'Learn and apply new theoretical models' },
+                    { zh: '跨領域', en: 'Cross-discipline', desc: '整合不同領域的知識', descEn: 'Integrate knowledge from different disciplines' },
+                    { zh: '導師回饋', en: 'Mentor Feedback', desc: '接受導師的指導和回饋', descEn: 'Receive mentor guidance and feedback' },
+                    { zh: '數據分析', en: 'Data Analysis', desc: '用數據驗證和優化模型', descEn: 'Validate and optimize models with data' },
+                    { zh: '實驗', en: 'Experimentation', desc: '持續進行小規模實驗', descEn: 'Continuously run small experiments' },
+                    { zh: '版本管理', en: 'Version Management', desc: '建立模型的迭代版本', descEn: 'Build iterative model versions' },
+                    { zh: '終身學習', en: 'Lifelong Learning', desc: '把學習作為終身習慣', descEn: 'Make learning a lifelong habit' }
+                ]
+            },
+            
+            navigation: {
+                title: '高維導航系統',
+                titleEn: 'High-Dimensional Navigation System',
+                description: '一套每天都在影響決策、時間、資源、行動與人生方向的高維導航系統',
+                content: `真正的高維導航系統，不是知道最多。而是能夠用更少的信息做更好的決策。
+
+能用一個原則決策，就不要用十個規則。
+能用一個框架理解，就不要用十本書。
+能用一個系統管理，就不要靠臨時應對。
+
+高維不是複雜。高維是簡化和優化。`
+            },
+            
+            cases: {
+                title: '低维 VS 高维',
+                titleEn: 'Low Dimension vs High Dimension - Real Life Examples',
+                description: '人生100%落地的具體例子',
+                content: `真正的高維思維不是理論，而是每天的決策和行動。
+
+低维習慣：看到機會就做，看到困難就放棄，靠感覺判斷。
+高维習慣：看到機會先評估是否符合目標，困難時診斷真正的瓶頸，靠系統判斷。
+
+低维學習：看了很多書但沒有應用，學了很多知識但沒有體系。
+高维學習：每次學習都追問能應用在哪三個地方，把零散知識組織成結構。
+
+低维人際：喜歡的人多多益善，討厭的人要遠離。
+高维人際：主動親近能互相成長的人，用邊界和同理心處理困難關係。
+
+低维時間：做完工作就放鬆，放鬆到底再衝刺。
+高维時間：根據能量和優先序規劃每週，在衝刺和恢復間找到平衡。
+
+低维目標：有很多夢想但沒有優先序，每年都在追新目標。
+高维目標：只有三個核心目標，所有行動都指向這三個方向。
+
+低维財務：賺到錢就花，花完了再賺。
+高维財務：根據目標制定預算，定期檢視收支，建立被動收入系統。
+
+真正的高維生活，不是更努力。而是更聰慧地分配資源和注意力。`
+            }
+        };
+        
+        let expandedCards = {};
+        let currentSection = 'intro';
+        let textCache = {};  // 用於存儲長文本
+        
+        function cacheText(text) {
+            const id = 'text_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            textCache[id] = text;
+            return id;
+        }
+        
+        function speakCachedText(textId) {
+            const text = textCache[textId];
+            if (text) {
+                speakText(text);
+            }
+        }
+        
+        function loadSection(sectionKey) {
+            currentSection = sectionKey;
+            const section = contentData[sectionKey];
+            if (!section) return;
+            
+            const content = document.getElementById('content-area');
+            
+            // 為標題英文創建緩存ID
+            const titleTextId = cacheText(section.titleEn);
+            
+            let html = `
+                <div class="section">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div>
+                            <div class="section-title">${section.title}</div>
+                            <div class="section-subtitle">${section.titleEn}</div>
+                        </div>
+                        <button class="btn-small" onclick="speakCachedText('${titleTextId}'); event.stopPropagation();" title="播放英文標題" style="white-space: nowrap;">🔊 Play</button>
+                    </div>
+            `;
+            
+            // 引言特殊處理
+            if (sectionKey === 'intro') {
+                const introTextId = cacheText(section.content);
+                const introEnTextId = cacheText(section.contentEn);
+                html += `<div class="warning-box" style="position: relative;">
+                    <button class="btn-small" onclick="speakCachedText('${introEnTextId}'); event.stopPropagation();" title="播放引言英文" style="position: absolute; top: 10px; right: 10px;">🔊</button>
+                    ${section.content}
+                </div>`;
+                
+                html += '<div class="divider"></div>';
+                html += '<div style="font-size: 14px; color: #1A2B5F; line-height: 2;">如果一個人沒有這九大結構，會發生什麼：<br><br>';
+                section.warnings.forEach((w, idx) => {
+                    html += `<div style="margin-bottom: 12px;"><span style="font-weight: bold; color: #C9960C;">${w.zh}</span><br>
+                    <span style="color: #0A7A72;">${w.en}</span><br>
+                    <span style="color: #999;">→ ${w.result}</span></div>`;
+                });
+                html += '</div>';
+            }
+            // 導航和案例
+            else if (sectionKey === 'navigation' || sectionKey === 'cases') {
+                if (section.question) {
+                    html += `<div style="margin: 15px 0; padding: 15px; background: rgba(201,150,12,0.1); border-left: 4px solid #C9960C;">
+                        <strong>${section.question}</strong>
+                    </div>`;
+                }
+                html += `<div style="white-space: pre-wrap; line-height: 1.8; font-size: 14px; color: #1A2B5F; margin-top: 20px;">${section.content}</div>`;
+            }
+            // 結構詳細頁
+            else {
+                if (section.question) {
+                    html += `<div style="margin: 15px 0; padding: 15px; background: rgba(201,150,12,0.1); border-left: 4px solid #C9960C;">
+                        <strong>${section.question}</strong>
+                    </div>`;
+                }
+                if (section.function) {
+                    html += `<div style="margin: 15px 0; padding: 15px; background: rgba(10,122,114,0.1); border-left: 4px solid #0A7A72;">
+                        <strong>${section.function}</strong>
+                    </div>`;
+                }
+                if (section.description) {
+                    html += `<div class="warning-box">${section.description}</div>`;
+                }
+                
+                html += '<div class="divider"></div>';
+                html += '<div style="font-size: 12px; color: #999; margin-bottom: 20px;">12個核心能力領域</div>';
+                
+                section.items.forEach((item, idx) => {
+                    const cardId = `${sectionKey}-${idx}`;
+                    const isExpanded = expandedCards[cardId];
+                    const itemTextId = cacheText(item.en);
+                    html += `
+                        <div class="card" id="card-${cardId}">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">${item.zh}</div>
+                                    <div class="card-subtitle">${item.en}</div>
+                                </div>
+                                <div class="card-controls">
+                                    <button class="btn-small" onclick="speakCachedText('${itemTextId}'); event.stopPropagation();" title="播放英文">🔊</button>
+                                    <button class="btn-small" onclick="toggleCard('${cardId}')">
+                                        ${isExpanded ? '▲' : '▼'}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-content ${isExpanded ? 'visible' : ''}">
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: bold; color: #1A2B5F;">${item.desc}</div>
+                                    <div style="color: #0A7A72; font-size: 12px; margin-top: 5px;">${item.descEn}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+            
+            // 更新導航 (安全的方式)
+            setTimeout(() => {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    if (item.getAttribute('onclick')?.includes(sectionKey)) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }, 10);
+        }
+        
+        function toggleCard(cardId) {
+            expandedCards[cardId] = !expandedCards[cardId];
+            const card = document.getElementById(`card-${cardId}`);
+            if (card) {
+                const content = card.querySelector('.card-content');
+                const btn = card.querySelector('.btn-small');
+                if (content) {
+                    content.classList.toggle('visible');
+                    if (btn) btn.textContent = expandedCards[cardId] ? '▲' : '▼';
+                }
+            }
+        }
+        
+        function toggleAllCards() {
+            const allExpanded = Object.values(expandedCards).every(v => v === true);
+            document.querySelectorAll('.card-content').forEach(content => {
+                if (allExpanded) {
+                    content.classList.remove('visible');
+                } else {
+                    content.classList.add('visible');
+                }
+            });
+            document.querySelectorAll('.btn-small').forEach(btn => {
+                btn.textContent = allExpanded ? '▼' : '▲';
+            });
+            Object.keys(expandedCards).forEach(key => {
+                expandedCards[key] = !allExpanded;
+            });
+        }
+        
+        function speakText(text) {
+            // 停止任何正在播放的語音
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+            
+            // 檢查是否支援語音合成
+            if (!('speechSynthesis' in window)) {
+                alert('您的瀏覽器不支援語音功能');
+                return;
+            }
+            
+            try {
+                // 創建語音對象
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;      // 語速：0.5-2.0
+                utterance.pitch = 1.0;      // 音調：0.5-2.0
+                utterance.volume = 1.0;     // 音量：0-1
+                
+                // 添加事件監聽
+                utterance.onstart = () => {
+                    console.log('開始播放:', text.substring(0, 30));
+                };
+                
+                utterance.onend = () => {
+                    console.log('播放完成');
+                };
+                
+                utterance.onerror = (event) => {
+                    console.error('語音播放錯誤:', event.error);
+                };
+                
+                // 播放語音
+                window.speechSynthesis.speak(utterance);
+            } catch (error) {
+                console.error('語音功能錯誤:', error);
+            }
+        }
+        
+        function filterContent(searchTerm) {
+            const cards = document.querySelectorAll('.card');
+            let count = 0;
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+                const subtitle = card.querySelector('.card-subtitle')?.textContent.toLowerCase() || '';
+                const match = title.includes(searchTerm.toLowerCase()) || subtitle.includes(searchTerm.toLowerCase());
+                card.style.display = match ? 'block' : 'none';
+                if (match) count++;
+            });
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSection('intro');
+        });
+    </script>
+</body>
+</html>
