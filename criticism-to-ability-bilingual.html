@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>批評變成能力 完整雙語版 | Criticism to Ability Full Bilingual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', system-ui, sans-serif;
+            background: #f8f8f8;
+            color: #1a2b5f;
+            line-height: 1.8;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a2b5f 0%, #0a7a72 100%);
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(26, 43, 95, 0.3);
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #1a2b5f;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .search-box button {
+            padding: 12px 20px;
+            background: #1a2b5f;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .tab-btn {
+            padding: 10px 15px;
+            background: transparent;
+            border: 2px solid #1a2b5f;
+            color: #1a2b5f;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #1a2b5f;
+            color: #ffffff;
+        }
+        
+        .tab-btn:hover {
+            background: #0a7a72;
+            border-color: #0a7a72;
+            color: #ffffff;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .bilingual-card {
+            background: #ffffff;
+            border-left: 4px solid #c9960c;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .bilingual-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .card-number {
+            font-size: 12px;
+            font-weight: bold;
+            color: #c9960c;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .card-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .lang-block {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 3px;
+            border-left: 3px solid #1a2b5f;
+        }
+        
+        .lang-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0a7a72;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .lang-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .tts-btn {
+            padding: 8px 14px;
+            background: #c9960c;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 8px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .tts-btn:hover {
+            background: #b8860b;
+            transform: scale(1.02);
+        }
+        
+        .tts-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .info-box {
+            background: #fffbf0;
+            border-left: 4px solid #c9960c;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box h3 {
+            margin-bottom: 10px;
+            color: #1a2b5f;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .counter {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .card-row {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 22px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                border-radius: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 批評變成能力 Full Bilingual</h1>
+            <p>Complete Chinese-English Version with TTS | 所有內容逐一雙語呈現，每行都能英文發音</p>
+        </header>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜尋內容... Search...">
+            <button onclick="searchContent()">搜尋 Search</button>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('philosophy')">💡 核心理念</button>
+            <button class="tab-btn" onclick="switchTab('steps')">16步生成</button>
+            <button class="tab-btn" onclick="switchTab('modules')">10大模組</button>
+            <button class="tab-btn" onclick="switchTab('database')">360資料庫</button>
+        </div>
+        
+        <!-- 核心理念 -->
+        <div id="philosophy" class="content-section active">
+            <div class="info-box">
+                <h3>🌟 資訊本體論 Information Ontology</h3>
+            </div>
+            <div id="philosophyCards"></div>
+        </div>
+        
+        <!-- 16步生成 -->
+        <div id="steps" class="content-section">
+            <div class="info-box">
+                <h3>⚡ 16步能力生成器 16-Step Ability Generator</h3>
+            </div>
+            <div id="stepsCards"></div>
+        </div>
+        
+        <!-- 10大模組 -->
+        <div id="modules" class="content-section">
+            <div class="info-box">
+                <h3>📖 10大核心模組 10 Core Modules</h3>
+            </div>
+            <div id="modulesCards"></div>
+        </div>
+        
+        <!-- 360資料庫 -->
+        <div id="database" class="content-section">
+            <div class="info-box">
+                <h3>💾 批評變能力資料庫 (360個案例)</h3>
+                <p>Criticism to Ability Database - 360 Cases</p>
+            </div>
+            <div id="databaseCards"></div>
+            <div class="counter" id="counter"></div>
+        </div>
+    </div>
+    
+    <script>
+        const philosophyData = [
+            {title: "資料本身不是智慧", en: "Data itself is not wisdom"},
+            {title: "資料很多，如果沒有結構，只會變成雜訊", en: "If there is no structure, lots of data will only turn into noise"},
+            {title: "一個人看很多書，如果沒有目標函數，知識會變成堆積", en: "If a person reads many books without a target function, knowledge becomes accumulation"},
+            {title: "一個人經歷很多事，如果沒有回寫機制，經驗會變成創傷", en: "If a person experiences many events without a feedback mechanism, experience becomes trauma"},
+            {title: "一個人吃很多苦，如果沒有壓縮能力，痛苦不會自動變智慧", en: "If a person endures much suffering without compression ability, pain will not automatically become wisdom"},
+            {title: "所以資訊本體論的重點不是資料很多", en: "So the key of information ontology is not having lots of data"},
+            {title: "而是：資料要進入結構", en: "Rather: data must enter a structure"},
+            {title: "資料進入結構後，才會變成資訊", en: "After data enters structure, it becomes information"},
+            {title: "資訊放進母體後，才會形成意義", en: "After information enters a matrix, it forms meaning"},
+            {title: "意義經過壓力測試後，才會形成能力", en: "After meaning passes stress tests, it forms ability"},
+            {title: "能力跨情境遷移後，才會接近智慧", en: "After ability transfers across contexts, it approaches wisdom"}
+        ];
+        
+        const stepsData = [
+            {step: 1, title: "停止防衛", en: "Stop Defending", question: "我是在保護面子，還是在找真相？", qa: "Am I protecting face or seeking truth?", stuck: "立即反駁、情緒化", breakthrough: "願意先聽完", ability: "情緒穩定"},
+            {step: 2, title: "分離身分", en: "Separate Identity", question: "他是在批評我，還是批評我的方法？", qa: "Is he criticizing me or my method?", stuck: "把批評等於否定自己", breakthrough: "身分與觀點分離", ability: "心理韌性"},
+            {step: 3, title: "提取資料", en: "Extract Data", question: "對方真正提供了哪些事實？", qa: "What facts did the other person provide?", stuck: "只記得語氣", breakthrough: "擷取有效資訊", ability: "資訊處理力"},
+            {step: 4, title: "過濾雜訊", en: "Filter Noise", question: "哪些是情緒？哪些是證據？", qa: "Which are emotions and which are evidence?", stuck: "全盤接受或全盤否定", breakthrough: "保留證據，丟掉情緒", ability: "批判思考"},
+            {step: 5, title: "找出誤差", en: "Identify Error", question: "我的模型哪裡不準？", qa: "Where is my model inaccurate?", stuck: "找對方錯", breakthrough: "找自己模型缺口", ability: "自我診斷"},
+            {step: 6, title: "找能力缺口", en: "Find Ability Gap", question: "如果能力足夠，還會犯這個錯嗎？", qa: "Would I make this error if I had enough ability?", stuck: "怪環境", breakthrough: "找需要補強的能力", ability: "能力定位"},
+            {step: 7, title: "找根因", en: "Find Root Cause", question: "為什麼會一直重複？", qa: "Why does this keep repeating?", stuck: "治標不治本", breakthrough: "修正底層原因", ability: "系統思維"},
+            {step: 8, title: "更新信念", en: "Update Belief", question: "哪個舊信念限制了我？", qa: "Which old belief limits me?", stuck: "固守舊觀念", breakthrough: "接受新證據", ability: "認知更新"},
+            {step: 9, title: "更新權重", en: "Update Weight", question: "哪個觀念的重要性要提高？", qa: "Which idea needs higher priority?", stuck: "仍照舊模式", breakthrough: "重新排序優先順序", ability: "判斷力"},
+            {step: 10, title: "設計新行動", en: "Design New Action", question: "下一次我要怎麼做？", qa: "How will I do it next time?", stuck: "只有後悔", breakthrough: "有具體改善策略", ability: "執行力"},
+            {step: 11, title: "壓力測試", en: "Stress Test", question: "新方法真的有效嗎？", qa: "Does the new method really work?", stuck: "不敢嘗試", breakthrough: "主動驗證", ability: "實驗能力"},
+            {step: 12, title: "建立回饋", en: "Build Feedback", question: "我如何知道自己變好了？", qa: "How do I know I improved?", stuck: "靠感覺", breakthrough: "建立可觀察指標", ability: "回饋能力"},
+            {step: 13, title: "壓縮經驗", en: "Compress Experience", question: "這次最大的學習是什麼？", qa: "What was the biggest lesson?", stuck: "經驗流失", breakthrough: "形成原則", ability: "結構化能力"},
+            {step: 14, title: "能力遷移", en: "Ability Transfer", question: "哪些地方也能使用？", qa: "Where else can I apply this?", stuck: "只能解一件事", breakthrough: "跨情境應用", ability: "泛化能力"},
+            {step: 15, title: "分享教學", en: "Share & Teach", question: "我能教別人嗎？", qa: "Can I teach others?", stuck: "停留在知道", breakthrough: "教學深化理解", ability: "表達能力"},
+            {step: 16, title: "智慧生成", en: "Wisdom Generation", question: "下次是否能更早發現問題？", qa: "Can I spot problems earlier next time?", stuck: "重複犯錯", breakthrough: "預先修正", ability: "智慧與預測力"}
+        ];
+        
+        const modulesData = [
+            {num: 1, title: "重新定義批評", en: "Redefine Criticism", content: ["批評不是攻擊 | Criticism is not attack", "批評是資料 | Criticism is data", "批評不是人格評價 | Criticism is not personality evaluation", "批評是模型診斷 | Criticism is model diagnosis", "批評不是能力終點 | Criticism is not the endpoint of ability", "批評是能力起點 | Criticism is the starting point of ability", "批評不是傷害 | Criticism is not harm", "真正傷害的是停止更新 | Real harm is stopping updates"]},
+            {num: 2, title: "大腦的兩種作業系統", en: "Two Brain Operating Systems", content: ["舊系統 Old: 批評→情緒→防衛→找藉口→停止更新→能力停滯", "新系統 New: 批評→收集資料→分析資料→更新模型→建立能力→再次驗證", "差距不是智商 Gap is not IQ", "而是更新流程 It's the update process"]},
+            {num: 3, title: "批評解碼器", en: "Criticism Decoder", content: ["老師說：字太醜 | Teacher says handwriting is ugly", "真正資訊是：表達效率不足 | Real info: poor expression efficiency", "老師說：作文沒有重點 | Teacher says essay has no focus", "真正資訊是：結構能力不足 | Real info: lack of structure ability", "老師說：不要粗心 | Teacher says don't be careless", "真正資訊是：注意力控制不足 | Real info: attention control insufficient", "老師說：速度太慢 | Teacher says too slow", "真正資訊是：自動化程度不足 | Real info: insufficient automation"]},
+            {num: 4, title: "能力節點診斷器", en: "Ability Node Diagnostic", content: ["背不起來→記憶策略不足 | Cannot memorize: memory strategy insufficient", "一直看錯題目→閱讀注意力不足 | Misreading: reading attention insufficient", "一直不敢回答→自信模型不足 | Afraid to answer: confidence model insufficient", "一直寫不出作文→輸出量不足 | Cannot write essay: output insufficient", "一直考不好→方法模型錯誤 | Poor test results: method model wrong"]},
+            {num: 5, title: "錯誤分類系統", en: "Error Classification System", content: ["所有錯誤只有六大類 | All errors fall into six categories:", "知識不足 | Insufficient knowledge", "理解不足 | Insufficient understanding", "練習不足 | Insufficient practice", "策略不足 | Insufficient strategy", "注意力不足 | Insufficient attention", "更新不足 | Insufficient updating", "只要知道是哪一類 | Once you know which category", "改善方向就會出現 | The improvement direction appears"]},
+            {num: 6, title: "老師真正送你的禮物", en: "Teacher's Real Gift", content: ["不是分數 | Not grades", "而是能力地圖 | But ability map", "不是紅字 | Not red marks", "而是更新入口 | But update entrance", "不是批評 | Not criticism", "而是下一步方向 | But next direction"]},
+            {num: 7, title: "每天更新流程", en: "Daily Update Process", content: ["第一步：今天哪裡做錯？ | Step 1: Where did I go wrong today?", "第二步：真正原因是什麼？ | Step 2: What is the real cause?", "第三步：是哪個能力節點？ | Step 3: Which ability node is it?", "第四步：我要如何補強？ | Step 4: How will I improve?", "第五步：什麼時候再次驗證？ | Step 5: When will I verify again?"]},
+            {num: 8, title: "錯誤不是敵人", en: "Error is Not Enemy", content: ["沒有錯誤→代表沒有挑戰 | No errors mean no challenges", "沒有挑戰→代表沒有成長 | No challenges mean no growth", "沒有成長→代表模型停止更新 | No growth means model stops updating", "真正可怕的不是錯 | The real fear is not error", "而是不敢錯 | But not daring to make mistakes"]},
+            {num: 9, title: "建立更新人格", en: "Build Update Personality", content: ["不說：我不會 | Don't say: I can't", "改說：我還沒建立這個能力 | Instead: I haven't built this ability yet", "不說：我很笨 | Don't say: I'm stupid", "改說：我的模型還需要更新 | Instead: My model needs updating", "不說：我失敗了 | Don't say: I failed", "改說：我得到新的訓練資料 | Instead: I got new training data"]},
+            {num: 10, title: "每天睡前六問", en: "Six Questions Before Sleep", content: ["問題1：今天我得到哪些新資料？ | Question 1: What new data did I get today?", "問題2：今天我修正了哪一個模型？ | Question 2: Which model did I fix?", "問題3：今天我建立了哪一項能力？ | Question 3: Which ability did I build?", "問題4：今天哪一個批評最有價值？ | Question 4: Which feedback was most valuable?", "問題5：今天我的預測比昨天準嗎？ | Question 5: Are my predictions more accurate?", "問題6：今天的我比昨天更新了嗎？ | Question 6: Did I update myself today?"]}
+        ];
+        
+        const databaseData = [
+            {num: 1, cn: "你英文單字背不起來", en: "You can't memorize English vocabulary", info: "記憶系統效率不足 | Memory system efficiency insufficient", ability: "長期記憶能力 | Long-term memory ability"},
+            {num: 2, cn: "你作文沒有重點", en: "Your essay has no focus", info: "結構能力不足 | Structure ability insufficient", ability: "文章架構能力 | Essay structure ability"},
+            {num: 3, cn: "你一直粗心", en: "You're always careless", info: "注意力管理不足 | Attention management insufficient", ability: "專注力能力 | Focus ability"},
+            {num: 4, cn: "你數學一直算錯", en: "You always get math calculations wrong", info: "驗證流程不足 | Verification process insufficient", ability: "自我驗證能力 | Self-verification ability"},
+            {num: 5, cn: "你太慢", en: "You're too slow", info: "能力尚未自動化 | Ability not yet automated", ability: "熟練度能力 | Proficiency ability"},
+            {num: 6, cn: "你講話沒有重點", en: "Your speech has no focus", info: "資訊壓縮能力不足 | Information compression insufficient", ability: "摘要能力 | Summarization ability"},
+            {num: 7, cn: "你常忘東忘西", en: "You often forget things", info: "外部記憶系統不足 | External memory system insufficient", ability: "第二大腦能力 | Second brain ability"},
+            {num: 8, cn: "你沒有耐心", en: "You have no patience", info: "延遲滿足能力不足 | Delayed gratification insufficient", ability: "自我控制能力 | Self-control ability"},
+            {num: 9, cn: "你一直找藉口", en: "You always make excuses", info: "責任承擔能力不足 | Responsibility insufficient", ability: "內控能力 | Internal locus of control ability"},
+            {num: 10, cn: "你不敢回答問題", en: "You don't dare answer questions", info: "失敗容忍能力不足 | Failure tolerance insufficient", ability: "勇敢嘗試能力 | Brave attempt ability"},
+            {num: 11, cn: "你一直拖延", en: "You always procrastinate", info: "啟動能力不足 | Initiation ability insufficient", ability: "立即行動能力 | Immediate action ability"},
+            {num: 12, cn: "你情緒太大", en: "Your emotions are too big", info: "情緒調節能力不足 | Emotion regulation insufficient", ability: "情緒管理能力 | Emotion management ability"},
+            {num: 13, cn: "你容易放棄", en: "You give up easily", info: "心理韌性不足 | Psychological resilience insufficient", ability: "恢復能力 | Recovery ability"},
+            {num: 14, cn: "你不會合作", en: "You don't know how to cooperate", info: "協作能力不足 | Collaboration ability insufficient", ability: "團隊能力 | Team ability"},
+            {num: 15, cn: "你沒有禮貌", en: "You have no manners", info: "社交模型不足 | Social model insufficient", ability: "人際能力 | Interpersonal ability"},
+            {num: 16, cn: "你沒有準備", en: "You're not prepared", info: "預先規劃能力不足 | Pre-planning ability insufficient", ability: "規劃能力 | Planning ability"},
+            {num: 17, cn: "你不守時", en: "You don't keep time", info: "時間管理能力不足 | Time management insufficient", ability: "節奏管理能力 | Rhythm management ability"},
+            {num: 18, cn: "你常插嘴", en: "You often interrupt", info: "傾聽能力不足 | Listening ability insufficient", ability: "深度傾聽能力 | Deep listening ability"},
+            {num: 19, cn: "你只會背", en: "You only memorize", info: "理解能力不足 | Understanding ability insufficient", ability: "建模能力 | Modeling ability"},
+            {num: 20, cn: "你不會應用", en: "You don't know how to apply", info: "遷移能力不足 | Transfer ability insufficient", ability: "跨情境能力 | Cross-context ability"},
+            {num: 21, cn: "你沒有創意", en: "You have no creativity", info: "組合能力不足 | Combination ability insufficient", ability: "創造能力 | Creative ability"},
+            {num: 22, cn: "你不敢發問", en: "You dare not ask questions", info: "提問能力不足 | Questioning ability insufficient", ability: "高品質提問能力 | High-quality questioning ability"},
+            {num: 23, cn: "你一直重複犯錯", en: "You keep making the same error", info: "回寫機制不足 | Feedback mechanism insufficient", ability: "模型更新能力 | Model update ability"},
+            {num: 24, cn: "你沒有自己的想法", en: "You have no thoughts of your own", info: "獨立思考能力不足 | Independent thinking insufficient", ability: "批判思考能力 | Critical thinking ability"},
+            {num: 25, cn: "你容易被影響", en: "You're easily influenced", info: "價值排序能力不足 | Value sorting ability insufficient", ability: "自主決策能力 | Autonomous decision-making ability"},
+            {num: 121, cn: "你很自私", en: "You're selfish", info: "沒有考慮他人需求 | Not considering others' needs", ability: "利他思考能力 | Altruistic thinking ability"},
+            {num: 122, cn: "你不會合作", en: "You don't cooperate", info: "共同目標意識不足 | Common goal awareness insufficient", ability: "團隊合作能力 | Team collaboration ability"},
+            {num: 123, cn: "你很固執", en: "You're stubborn", info: "模型更新能力不足 | Model update ability insufficient", ability: "認知彈性能力 | Cognitive flexibility ability"},
+            {num: 124, cn: "你都不聽別人說", en: "You never listen to others", info: "傾聽能力不足 | Listening ability insufficient", ability: "深度傾聽能力 | Deep listening ability"},
+            {num: 125, cn: "你一直打斷別人", en: "You always interrupt others", info: "等待能力不足 | Waiting ability insufficient", ability: "自我控制能力 | Self-control ability"},
+            {num: 262, cn: "你一直不會用AI", en: "You don't know how to use AI", info: "AI協作不足 | AI collaboration insufficient", ability: "AI協作能力 | AI collaboration ability"},
+            {num: 263, cn: "你一直直接相信AI", en: "You directly believe AI", info: "驗證能力不足 | Verification ability insufficient", ability: "AI驗證能力 | AI verification ability"},
+            {num: 264, cn: "你一直不會下Prompt", en: "You don't know how to write Prompt", info: "提問品質不足 | Question quality insufficient", ability: "Prompt設計能力 | Prompt design ability"},
+            {num: 300, cn: "你一直討厭別人指出你的缺點", en: "You hate it when people point out your flaws", info: "把回饋當成人格否定 | Treating feedback as personal rejection", ability: "高維更新能力 | Higher-dimensional update ability"},
+            {num: 301, cn: "你一直沒有改變", en: "You never change", info: "更新機制不存在 | Update mechanism non-existent", ability: "持續更新能力 | Continuous update ability"},
+            {num: 360, cn: "老師一直批評你", en: "Teacher always criticizes you", info: "老師是在提供新的訓練資料 | Teacher is providing new training data", ability: "終身更新能力 | Lifelong update ability"}
+        ];
+        
+        function renderPhilosophy() {
+            const container = document.getElementById('philosophyCards');
+            container.innerHTML = '';
+            philosophyData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'bilingual-card';
+                card.innerHTML = `
+                    <div class="card-row full">
+                        <div class="lang-block">
+                            <span class="lang-label">中文 Chinese</span>
+                            <div class="lang-text">${item.title}</div>
+                        </div>
+                    </div>
+                    <div class="card-row full">
+                        <div class="lang-block">
+                            <span class="lang-label">英文 English</span>
+                            <div class="lang-text">${item.en}</div>
+                            <button class="tts-btn" onclick="speak('${item.en}')">🔊 Play English</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderSteps() {
+            const container = document.getElementById('stepsCards');
+            container.innerHTML = '';
+            stepsData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'bilingual-card';
+                card.innerHTML = `
+                    <div class="card-number">Step ${item.step}</div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">中文 Chinese</span>
+                            <div class="lang-text"><strong>${item.title}</strong></div>
+                            <div class="lang-text" style="margin-top:5px; font-size:14px;">${item.question}</div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label">英文 English</span>
+                            <div class="lang-text"><strong>${item.en}</strong></div>
+                            <div class="lang-text" style="margin-top:5px; font-size:14px;">${item.qa}</div>
+                            <button class="tts-btn" onclick="speak('${item.en}. ${item.qa}')">🔊 Play</button>
+                        </div>
+                    </div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">卡住 Stuck</span>
+                            <div class="lang-text">${item.stuck}</div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label">突破 Breakthrough</span>
+                            <div class="lang-text">${item.breakthrough}</div>
+                        </div>
+                    </div>
+                    <div class="card-row full">
+                        <div class="lang-block">
+                            <span class="lang-label">生成能力 Generated Ability</span>
+                            <div class="lang-text">${item.ability}</div>
+                            <button class="tts-btn" onclick="speak('${item.ability}')">🔊 Play</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderModules() {
+            const container = document.getElementById('modulesCards');
+            container.innerHTML = '';
+            modulesData.forEach((module, idx) => {
+                const card = document.createElement('div');
+                card.className = 'bilingual-card';
+                const contentHtml = module.content.map(line => {
+                    const parts = line.split(' | ');
+                    return `<div class="card-row"><div class="lang-block"><span class="lang-label">中文</span><div class="lang-text">${parts[0]}</div></div><div class="lang-block"><span class="lang-label">English</span><div class="lang-text">${parts[1]}</div><button class="tts-btn" onclick="speak('${parts[1]}')">🔊 Play</button></div></div>`;
+                }).join('');
+                
+                card.innerHTML = `
+                    <div class="card-number">Module ${module.num}</div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">中文</span>
+                            <div class="lang-text"><strong>${module.title}</strong></div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label">English</span>
+                            <div class="lang-text"><strong>${module.en}</strong></div>
+                            <button class="tts-btn" onclick="speak('${module.en}')">🔊 Play</button>
+                        </div>
+                    </div>
+                    ${contentHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderDatabase() {
+            const container = document.getElementById('databaseCards');
+            container.innerHTML = '';
+            let shown = 0;
+            
+            databaseData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'bilingual-card';
+                card.id = `db-${item.num}`;
+                
+                const infoLine = item.info.split(' | ');
+                const abilityLine = item.ability.split(' | ');
+                
+                card.innerHTML = `
+                    <div class="card-number">#${String(item.num).padStart(3, '0')}</div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">批評 Criticism</span>
+                            <div class="lang-text">${item.cn}</div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label"></span>
+                            <div class="lang-text">${item.en}</div>
+                            <button class="tts-btn" onclick="speak('${item.en}')">🔊 Play</button>
+                        </div>
+                    </div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">真正資訊 Real Info</span>
+                            <div class="lang-text">${infoLine[0]}</div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label"></span>
+                            <div class="lang-text">${infoLine[1]}</div>
+                            <button class="tts-btn" onclick="speak('${infoLine[1]}')">🔊 Play</button>
+                        </div>
+                    </div>
+                    <div class="card-row">
+                        <div class="lang-block">
+                            <span class="lang-label">能力節點 Ability Node</span>
+                            <div class="lang-text">${abilityLine[0]}</div>
+                        </div>
+                        <div class="lang-block">
+                            <span class="lang-label"></span>
+                            <div class="lang-text">${abilityLine[1]}</div>
+                            <button class="tts-btn" onclick="speak('${abilityLine[1]}')">🔊 Play</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+                shown++;
+            });
+            
+            document.getElementById('counter').innerHTML = `📊 已展示 ${shown} 個案例 | Showing ${shown} cases`;
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function speak(text) {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            speechSynthesis.speak(utterance);
+        }
+        
+        function searchContent() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchText) {
+                alert('請輸入搜尋內容 | Please enter search text');
+                return;
+            }
+            
+            let found = 0;
+            const sections = ['philosophyCards', 'stepsCards', 'modulesCards', 'databaseCards'];
+            
+            sections.forEach(sectionId => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    Array.from(section.children).forEach(card => {
+                        const text = card.innerText.toLowerCase();
+                        if (text.includes(searchText)) {
+                            card.style.display = 'block';
+                            found++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+            
+            alert(`找到 ${found} 個相符項目 | Found ${found} matches`);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPhilosophy();
+            renderSteps();
+            renderModules();
+            renderDatabase();
+        });
+    </script>
+</body>
+</html>
