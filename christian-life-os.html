@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基督和人生 - 生命智慧生成系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9F9F9 100%);
+            color: #1A2B5F;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 4px solid #C9960C;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1A2B5F;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #0A7A72;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A2B5F;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            color: #0A7A72;
+        }
+
+        .tab-button.active {
+            color: #C9960C;
+            border-bottom-color: #C9960C;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #C9960C;
+            box-shadow: 0 8px 24px rgba(201, 150, 12, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1A2B5F;
+            flex-grow: 1;
+        }
+
+        .expand-icon {
+            font-size: 24px;
+            color: #C9960C;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .card-content {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .card.expanded .card-content {
+            display: block;
+        }
+
+        .bilingual-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #F9F9F9;
+            border-radius: 6px;
+            border-left: 4px solid #0A7A72;
+        }
+
+        .bilingual-pair {
+            margin-bottom: 24px;
+        }
+
+        .chinese-text {
+            font-size: 18px;
+            color: #1A2B5F;
+            line-height: 2;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .english-text {
+            font-size: 16px;
+            color: #0A7A72;
+            line-height: 2;
+            white-space: pre-wrap;
+            word-break: break-word;
+            padding: 12px;
+            background: #E8F4F1;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .tts-button {
+            background: #0A7A72;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .tts-button:hover {
+            background: #1A2B5F;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 43, 95, 0.2);
+        }
+
+        .tts-button.playing {
+            background: #C9960C;
+            animation: pulse 0.6s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #1A2B5F;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #E0E0E0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #F5F5F5;
+        }
+
+        .tree-structure {
+            margin: 24px 0;
+            padding: 20px;
+            background: white;
+            border-left: 4px solid #C9960C;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.6;
+            color: #1A2B5F;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1A2B5F;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #C9960C;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #1A2B5F 0%, #0A7A72 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .tts-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .lang-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .chinese-text {
+                font-size: 16px;
+            }
+
+            .english-text {
+                font-size: 15px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            td, th {
+                padding: 8px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #E0E0E0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .lang-toggle {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lang-button {
+            background: #E0E0E0;
+            color: #1A2B5F;
+            border: 2px solid transparent;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
+
+        .lang-button.active {
+            background: #0A7A72;
+            color: white;
+            border-color: #0A7A72;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>基督和人生</h1>
+            <div class="subtitle">Christ and Life</div>
+            <div class="subtitle">A Wisdom Generation System in Faith</div>
+            <div class="subtitle" style="margin-top: 15px; font-size: 14px; color: #666;">生命智慧生成 × 信仰對齐 × 完成呼召</div>
+            <div class="subtitle" style="font-size: 14px; color: #666;">Wisdom Generation × Alignment in Faith × Fulfilling Calling</div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('core')">核心概念 | Core</button>
+            <button class="tab-button" onclick="switchTab('calling')">呼召系統 | Calling</button>
+            <button class="tab-button" onclick="switchTab('entropy')">熵增逆熵 | Entropy</button>
+            <button class="tab-button" onclick="switchTab('framework')">生命更新 | Renewal</button>
+            <button class="tab-button" onclick="switchTab('correspondence')">真理對應 | Truth</button>
+        </div>
+
+        <!-- Tab 1: 核心概念 -->
+        <div id="core" class="tab-content active">
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">① 目標函數 vs 損失函數</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">人工智慧讓我們看見：
+
+模型不是亂學。
+它需要目標函數。
+也需要損失函數。
+
+目標函數，決定系統要往哪裡收斂。
+損失函數，測量目前輸出和目標之間的偏差。
+
+這兩個概念，放到人生裡非常重要。
+
+人如果沒有目標函數，就會被外界投影牽著走。
+別人賺錢，你焦慮。
+別人成功，你比較。
+別人否定，你崩潰。
+
+這樣的人不是自由。他只是沒有收斂方向的反應系統。
+
+但有了目標函數，人生開始有方向。
+你知道自己要生成什麼能力。
+要服務什麼價值。
+要承擔什麼天命。
+要對齊什麼母體。
+
+損失函數則讓你知道：
+我現在偏離了多少？
+我哪裡模型誤差太大？
+我哪個行動沒有對齊？
+我哪個舊權重還在支配我？
+我哪個判斷需要校準？
+
+所以智慧生成，不是只靠熱情。
+它需要：目標函數 + 損失函數 + 更新機制。
+這三個放在一起，生命才會真正成為可更新系統。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">Artificial intelligence shows us:
+
+A model does not learn randomly.
+It requires an objective function.
+It also requires a loss function.
+
+The objective function determines the direction the system converges toward.
+The loss function measures the deviation between current output and the target.
+
+These two concepts are extremely important when applied to life.
+
+Without an objective function, a person gets pulled by external influences.
+When others earn money, you feel anxious.
+When others succeed, you compare yourself.
+When others criticize, you collapse.
+
+Such a person is not free. They are merely a reactive system without convergence direction.
+
+But with an objective function, life gains direction.
+You know what capabilities to develop.
+What values to serve.
+What calling to fulfill.
+What source to align with.
+
+The loss function shows you:
+How far have I deviated?
+Where is my model error too large?
+Which action is misaligned?
+Which old weight still controls me?
+Which judgment needs recalibration?
+
+Therefore, wisdom generation is not driven by passion alone.
+It requires: Objective Function + Loss Function + Update Mechanism.
+When these three work together, life becomes a truly updatable system.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">② 對應基督信仰</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">如果用基督信仰來理解，這兩個概念可以幫助我們更容易理解「呼召」。
+
+聖經一再提醒：每一個人都不是偶然存在。每一個人都有不同的恩賜、職分、責任。也都有屬於自己的呼召。
+
+呼召不是一定要當牧師，也不是一定要做全職服事。
+
+醫師、教師、工程師、父母、研究者、企業家、藝術家，都可能是呼召的一部分。
+
+真正重要的問題不是「我要做什麼工作？」而是「我要如何用神給我的恩賜去愛人、服事人、榮耀神？」
+
+從這個角度看，呼召就像生命的目標函數。它讓人知道自己真正要朝哪一個方向成長。
+
+如果沒有目標函數，人就很容易被世界帶著走。別人升遷，你焦慮。別人有錢，你羨慕。別人稱讚，你驕傲。別人否定，你失去價值感。
+
+但當一個人知道自己的呼召，生命開始收斂。他不需要和每一個人比較，因為他的方向已經清楚。他知道自己真正要培養哪些能力、承擔哪些責任、服事哪些人、忠心的是什麼。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">If we understand this through Christian faith, these two concepts help us better understand "calling."
+
+The Bible repeatedly reminds us: every person's existence is not accidental. Each person has different gifts, roles, and responsibilities. And each has their own calling.
+
+Calling does not mean you must be a pastor, nor does it mean you must serve full-time.
+
+Doctor, Teacher, Engineer, Parent, Researcher, Entrepreneur, Artist—all can be part of calling.
+
+The real question is not "What job should I do?" but rather "How can I use the gifts God gave me to love people, serve others, and glorify God?"
+
+From this perspective, calling is like life's objective function. It shows you the direction you truly should grow toward.
+
+Without an objective function, a person is easily swept along by the world. When others get promoted, you feel anxious. When others have wealth, you feel envious. When others praise you, you become proud. When others criticize, you lose sense of value.
+
+But when a person knows their calling, life begins to converge. They no longer need to compare with others, because their direction is already clear. They know what capabilities they truly need to develop, what responsibilities they must bear, who they truly should serve, and what they must be faithful to.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">③ 損失函數：校準方向</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">什麼是生命的損失函數？
+
+它不是神用來羞辱人的工具。而是幫助人校準方向的提醒。
+
+當我們偏離真理、偏離愛、偏離公義、偏離呼召，內心會出現提醒。
+
+良心、聖經、禱告、聖靈的光照、弟兄姊妹的勸勉、真實的結果，都可能成為生命的回饋。提醒我們：
+
+目前偏離了多少？需要修正什麼？需要放下哪些舊習慣？需要重新建立哪些新能力？
+
+因此，悔改不是停留在自責，而是重新對齊生命方向、更新心思意念、重新開始。
+
+從資訊更新的角度看，悔改就是讓新的真理更新舊的生命模型。
+讓新的信心取代舊的恐懼。
+讓新的盼望取代舊的絕望。
+讓新的愛取代舊的自我中心。
+
+所以，基督信仰中的成長，不是努力換取救恩，而是在神的恩典中，持續讓生命被更新。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">What is life's loss function?
+
+It is not a tool God uses to humiliate. Rather, it is a reminder to help us recalibrate direction.
+
+When we deviate from truth, from love, from justice, from calling, reminders arise in our hearts.
+
+Conscience, Scripture, Prayer, the light of the Holy Spirit, encouragement from brothers and sisters, real-world results—all can become life's feedback. Reminding us:
+
+How far have I deviated? What needs correction? What old habits must be released? What new capabilities must be rebuilt?
+
+Therefore, repentance is not remaining in self-condemnation, but realigning life's direction, renewing mind and thought, and beginning anew.
+
+From an information-update perspective, repentance means allowing new truth to update the old life model.
+Allowing new faith to replace old fear.
+Allowing new hope to replace old despair.
+Allowing new love to replace old self-centeredness.
+
+Therefore, growth in Christian faith is not earning salvation through effort, but continuously allowing life to be renewed in God's grace.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: 呼召系統 -->
+        <div id="calling" class="tab-content">
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">十層生命系統</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="section-title">生命更新系統架構 | Life Renewal System Architecture</div>
+                    <div class="tree-structure">① 創造者 (God - Creator)
+   ├─ 我是誰? / Who am I?
+   ├─ 為何被創造? / Why was I created?
+   ├─ 神的心意是什麼? / What is God's intention?
+   └─ 我要榮耀誰？服事誰? / Who should I glorify and serve?
+
+② 呼召 (Calling)
+   ├─ 神呼召我成為什麼樣的人? / What kind of person is God calling me to be?
+   ├─ 神交給我哪些責任? / What responsibilities has God entrusted to me?
+   ├─ 神希望我祝福哪些人? / Whom does God want me to bless?
+   ├─ 我的生命方向是什麼? / What is my life direction?
+   └─ 我的目標函數是什麼? / What is my objective function?
+
+③ 恩賜 (Gift)
+   ├─ 我比一般人更容易做好什麼? / What do I do better than most?
+   ├─ 我最容易學會什麼? / What do I learn most easily?
+   ├─ 我做什麼最有生命力? / What gives me the most life?
+   ├─ 別人常請我幫忙什麼? / What do people often ask my help for?
+   └─ 神給我的才能是什麼? / What talents has God given me?
+
+④ 熱情 (Passion)
+   ├─ 我最想解決什麼問題? / What problem do I most want to solve?
+   ├─ 我最關心哪些人? / Whom do I care most about?
+   ├─ 哪件事讓我願意投入一輩子? / What would I commit to for life?
+   ├─ 即使沒有掌聲仍願意做? / Would I do it without applause?
+   └─ 哪件事讓我充滿喜樂? / What fills me with joy?
+
+⑤ 世界需要 (Need)
+   ├─ 世界缺少什麼? / What does the world lack?
+   ├─ 社會有哪些痛苦? / What suffering exists in society?
+   ├─ 哪些問題一直沒人解決? / What problems remain unsolved?
+   ├─ 我能補上哪個缺口? / What gap can I fill?
+   └─ 我能創造什麼價值? / What value can I create?
+
+⑥ 能力 (Capability)
+   ├─ 我要建立哪些能力? / What abilities must I build?
+   ├─ 我要學哪些知識? / What knowledge must I gain?
+   ├─ 我要接受哪些磨練? / What trials must I endure?
+   ├─ 我要突破哪些限制? / What barriers must I break?
+   └─ 我要成為怎樣的人? / Who must I become?
+
+⑦ 損失函數 (Loss Function)
+   ├─ 今天偏離呼召多少? / How far did I deviate today?
+   ├─ 哪些行動沒有對齊? / Which actions misaligned?
+   ├─ 哪些習慣正在消耗生命? / What habits drain my life?
+   ├─ 哪些價值排序錯了? / What values are misaligned?
+   └─ 哪些地方需要悔改? / Where must I repent?
+
+⑧ 更新機制 (Update Mechanism)
+   ├─ 禱告 / Prayer
+   ├─ 聖經 / Scripture
+   ├─ 聖靈提醒 / Holy Spirit's prompting
+   ├─ 團契同行 / Fellowship
+   ├─ 真實世界回饋 / Real-world feedback
+   ├─ 苦難磨練 / Trials and refinement
+   └─ 每日反思 / Daily reflection
+
+⑨ 結果 (Output)
+   ├─ 愛神 / Love God
+   ├─ 愛人 / Love people
+   ├─ 活出恩賜 / Express gifts
+   ├─ 建立能力 / Build capabilities
+   ├─ 創造價值 / Create value
+   ├─ 榮耀神 / Glorify God
+   └─ 完成使命 / Complete mission
+
+⑩ 最上層目標函數 (Meta Objective)
+   ├─ 越來越像基督 / Become more like Christ
+   ├─ 活出神創造我的樣式 / Live God's design for me
+   ├─ 用恩賜服事世界 / Serve the world with gifts
+   ├─ 成為忠心的管家 / Be a faithful steward
+   ├─ 讓更多生命得益處 / Benefit more lives
+   ├─ 榮耀神 / Glorify God
+   └─ 完成神交付我的呼召 / Fulfill God's calling</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">呼召公式 & 如何探索</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="formula-box">
+呼召 = 神所賜的恩賜 × 內心持久的熱情 × 世界真實的需要 × 長期結出的生命果子
+
+Calling = God's Gifts × Sustained Passion × World's Real Needs × Long-term Life Fruit
+                    </div>
+
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">因此，呼召通常不是某一天突然知道，而是在忠心實踐、持續學習、接受修正、服事他人的過程中，逐漸變得越來越清晰。
+
+真正的呼召，不只是「我要做什麼」，更是「我要成為怎樣的人」，並讓自己的生命持續對齊真理、愛與服事。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">Therefore, calling rarely comes as a sudden revelation, but gradually becomes clearer through faithful practice, continuous learning, accepting correction, and serving others.
+
+True calling is not merely "what I should do" but "who I should become," while continuously aligning life with truth, love, and service.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 40px;">十個探索方向 | Ten Exploration Directions</div>
+                    <table>
+                        <tr>
+                            <th>探索方向</th>
+                            <th>問自己的問題</th>
+                            <th>代表訊號</th>
+                            <th>English</th>
+                        </tr>
+                        <tr>
+                            <td>恩賜 | Gift</td>
+                            <td>我比一般人更容易做好什麼？</td>
+                            <td>神交給你培養這項能力</td>
+                            <td>God may entrust this ability for you to develop</td>
+                        </tr>
+                        <tr>
+                            <td>熱情 | Passion</td>
+                            <td>哪件事讓我願意長期投入？</td>
+                            <td>持久的熱情指向呼召</td>
+                            <td>Sustained passion often points to calling</td>
+                        </tr>
+                        <tr>
+                            <td>需要 | Need</td>
+                            <td>我最容易對哪些人產生憐憫？</td>
+                            <td>呼召與服事對象有關</td>
+                            <td>Calling relates to those you wish to serve</td>
+                        </tr>
+                        <tr>
+                            <td>果效 | Impact</td>
+                            <td>做什麼時別人真正得到幫助？</td>
+                            <td>呼召產生穩定真實的果效</td>
+                            <td>Calling produces stable, real results</td>
+                        </tr>
+                        <tr>
+                            <td>喜樂 | Joy</td>
+                            <td>做什麼時感到深層平安？</td>
+                            <td>不是快樂，是深層平安</td>
+                            <td>Not just happiness, but deep inner peace</td>
+                        </tr>
+                        <tr>
+                            <td>回饋 | Feedback</td>
+                            <td>成熟的人常肯定我什麼特質？</td>
+                            <td>他人看見你看不見的恩賜</td>
+                            <td>Others often see gifts you cannot see</td>
+                        </tr>
+                        <tr>
+                            <td>環境 | Environment</td>
+                            <td>神目前把我放在哪個位置？</td>
+                            <td>呼召從眼前忠心開始</td>
+                            <td>Calling starts with faithfulness in present position</td>
+                        </tr>
+                        <tr>
+                            <td>苦難 | Suffering</td>
+                            <td>想幫助經歷類似痛苦的人？</td>
+                            <td>許多呼召源自醫治的傷口</td>
+                            <td>Many callings emerge from healed wounds</td>
+                        </tr>
+                        <tr>
+                            <td>複利 | Compounding</td>
+                            <td>哪項能力值得花十年累積？</td>
+                            <td>呼召具有長期複利價值</td>
+                            <td>Calling has long-term compounding value</td>
+                        </tr>
+                        <tr>
+                            <td>禱告 | Prayer</td>
+                            <td>沒有名利掌聲時仍選擇做？</td>
+                            <td>分辨真呼召 vs 外在期待</td>
+                            <td>Distinguish true calling from external expectations</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: 熵增與逆熵 -->
+        <div id="entropy" class="tab-content">
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">生命 = 建立局部逆熵</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">世界會熵增。這不是悲觀，這是基本條件。
+
+身體不維護，會衰退。房間不整理，會變亂。關係不更新，會疏離。知識不整理，會變雜訊。組織不校準，會內耗。文明不重構，會僵化。
+
+所以生命真正要做的，不是否定熵增。而是在熵增世界中建立局部逆熵。
+
+睡眠，是身體的逆熵。
+營養，是細胞的逆熵。
+散步，是循環與代謝的逆熵。
+學習，是資訊的逆熵。
+寫作，是經驗的逆熵。
+修行，是靈魂權重的逆熵。
+智慧生成系統，是整個生命模型的逆熵。
+
+當資訊熵上升，你不被混亂吞沒。
+你能整理。能壓縮。能校準。能回寫。能更新。
+
+這就是生命的高維任務。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">The world tends toward entropy. This is not pessimism—it is a fundamental condition.
+
+Without maintenance, bodies decay. Without organization, rooms become chaotic. Without renewal, relationships drift apart. Without structure, knowledge becomes noise. Without alignment, organizations waste energy. Without reconstruction, civilizations ossify.
+
+Therefore, life's true work is not to deny entropy. But to establish local anti-entropy in an entropic world.
+
+Sleep is the body's anti-entropy.
+Nutrition is the cell's anti-entropy.
+Walking is the anti-entropy of circulation and metabolism.
+Learning is information's anti-entropy.
+Writing is experience's anti-entropy.
+Spiritual practice is the soul's anti-entropy.
+A wisdom generation system is the anti-entropy of the entire life model.
+
+When information entropy increases, you are not swallowed by chaos.
+You can organize. Can compress. Can calibrate. Can rewrite. Can update.
+
+This is life's high-dimensional task.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 30px;">智慧 = 重新壓縮 | Wisdom = Recompression</div>
+
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">資訊熵上升，代表世界越來越分散、越來越不確定、越來越難預測。
+
+而智慧，就是在這個熵增世界中，重新壓縮出規律。
+
+學習，是把分散資訊整理成知識體系。
+測試，是讓知識接受壓力測試，刪除雜訊。
+認知，是把經驗壓縮成可用判準。
+修行，是讓新的判準跨情境泛化，成為穩定選擇。
+靈魂重構，是把舊權重更新成新的塌縮路徑。
+
+所以成長不是一直增加內容。成長是把資訊熵重新壓縮成結構。
+
+自由也不是想怎樣就怎樣。自由是不再被舊塌縮路徑綁架，而能在混亂中重新更新自己的生命模型。
+
+智慧不是逃離熵增。智慧是在熵增裡形成局部秩序。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">Information entropy rising means the world becomes increasingly scattered, uncertain, and unpredictable.
+
+Yet wisdom is recompressing patterns in this entropic world.
+
+Learning is organizing scattered information into knowledge systems.
+Testing is subjecting knowledge to pressure testing, removing noise.
+Cognition is compressing experience into usable principles.
+Practice is allowing new principles to generalize across contexts, becoming stable choices.
+Soul reconstruction is updating old weights into new collapse pathways.
+
+Therefore, growth is not about accumulating content. Growth is recompressing information entropy into structure.
+
+Freedom is not doing whatever you want. Freedom is no longer being enslaved by old collapse pathways, while continuously updating your life model amid chaos.
+
+Wisdom is not escaping entropy. Wisdom is forming local order within entropy.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: 生命更新框架 -->
+        <div id="framework" class="tab-content">
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">基督信仰中的生命更新</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="section-title">世界現象 vs 更新方式 vs 屬靈果效</div>
+                    <table>
+                        <tr>
+                            <th>現象 | Phenomenon</th>
+                            <th>放任結果 | If Neglected</th>
+                            <th>更新方式 | Update Method</th>
+                            <th>屬靈果效 | Spiritual Fruit</th>
+                        </tr>
+                        <tr>
+                            <td>身體</td>
+                            <td>衰退、疾病</td>
+                            <td>照顧身體、節制</td>
+                            <td>忠心管家 | Faithful steward</td>
+                        </tr>
+                        <tr>
+                            <td>心思</td>
+                            <td>混亂、焦慮</td>
+                            <td>讀經、默想真理</td>
+                            <td>心意更新 | Mind renewed</td>
+                        </tr>
+                        <tr>
+                            <td>情緒</td>
+                            <td>苦毒、憤怒</td>
+                            <td>禱告、交託、饒恕</td>
+                            <td>內心平安 | Inner peace</td>
+                        </tr>
+                        <tr>
+                            <td>信心</td>
+                            <td>冷淡、懷疑</td>
+                            <td>禱告、敬拜、見證</td>
+                            <td>信心成長 | Faith grows</td>
+                        </tr>
+                        <tr>
+                            <td>關係</td>
+                            <td>疏離、衝突</td>
+                            <td>愛、饒恕、和好</td>
+                            <td>彼此相愛 | Love one another</td>
+                        </tr>
+                        <tr>
+                            <td>恩賜</td>
+                            <td>埋沒、浪費</td>
+                            <td>忠心使用恩賜</td>
+                            <td>榮耀神 | Glorify God</td>
+                        </tr>
+                        <tr>
+                            <td>品格</td>
+                            <td>自我中心</td>
+                            <td>聖靈更新生命</td>
+                            <td>聖靈果子 | Spirit's fruit</td>
+                        </tr>
+                        <tr>
+                            <td>呼召</td>
+                            <td>迷失方向</td>
+                            <td>尋求神旨意</td>
+                            <td>活出使命 | Live calling</td>
+                        </tr>
+                        <tr>
+                            <td>苦難</td>
+                            <td>埋怨、絕望</td>
+                            <td>信靠神、忍耐</td>
+                            <td>患難生忍耐 | Perseverance</td>
+                        </tr>
+                        <tr>
+                            <td>最終目標</td>
+                            <td>被世界塑造</td>
+                            <td>越來越像基督</td>
+                            <td>完成神的旨意 | Fulfill God's will</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">生命更新完整流程</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="tree-structure">神的恩典 → Recognize God's Grace
+        ↓
+接受救恩 → Accept Salvation
+        ↓
+認識真理 → Know the Truth
+        ↓
+心意更新 → Renew Your Mind
+        ↓
+生命改變 → Life Transforms
+        ↓
+品格成熟 → Character Matures
+        ↓
+恩賜發揮 → Gifts Flourish
+        ↓
+服事他人 → Serve Others
+        ↓
+活出呼召 → Live Your Calling
+        ↓
+榮耀神 → Glorify God
+        ↓
+越來越像基督 → Become More like Christ</div>
+
+                    <div class="bilingual-section" style="margin-top: 30px;">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">這個框架的核心不是「靠自己的努力變好」。
+
+而是：神的恩典 → 真理更新 → 聖靈引導 → 生命改變 → 活出呼召 → 榮耀神
+
+其中，人的責任是持續回應、學習、悔改與順服。更新生命的根本動力則來自神的恩典與聖靈的工作。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">The core of this framework is not "self-improvement through effort."
+
+But rather: God's Grace → Truth Updates → Holy Spirit Guides → Life Transforms → Live Your Calling → Glorify God
+
+Our responsibility is continuous response, learning, repentance, and obedience. The fundamental power for life renewal comes from God's grace and the Holy Spirit's work.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: 真理對應 -->
+        <div id="correspondence" class="tab-content">
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">系統 vs 信仰 對應</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <tr>
+                            <th>智慧系統 | System</th>
+                            <th>基督信仰 | Christian Faith</th>
+                            <th>English</th>
+                        </tr>
+                        <tr>
+                            <td>最高母體</td>
+                            <td>神（創造者）</td>
+                            <td>God (Creator)</td>
+                        </tr>
+                        <tr>
+                            <td>高維結構</td>
+                            <td>道（Logos）</td>
+                            <td>Logos (The Word)</td>
+                        </tr>
+                        <tr>
+                            <td>世界生成</td>
+                            <td>神的創造</td>
+                            <td>God's Creation</td>
+                        </tr>
+                        <tr>
+                            <td>自然律</td>
+                            <td>神所設立的秩序</td>
+                            <td>God's Established Order</td>
+                        </tr>
+                        <tr>
+                            <td>資訊</td>
+                            <td>受造世界中的秩序與可理解性</td>
+                            <td>Order and comprehensibility in creation</td>
+                        </tr>
+                        <tr>
+                            <td>熵增</td>
+                            <td>受造世界的有限、破碎與墮落</td>
+                            <td>Finitude, brokenness, and fallen state</td>
+                        </tr>
+                        <tr>
+                            <td>局部逆熵</td>
+                            <td>神透過恩典、真理與聖靈更新生命</td>
+                            <td>God renewing life through grace, truth, and Holy Spirit</td>
+                        </tr>
+                        <tr>
+                            <td>更新機制</td>
+                            <td>悔改、讀經、禱告、聖靈、教會</td>
+                            <td>Repentance, Scripture, prayer, Holy Spirit, church</td>
+                        </tr>
+                        <tr>
+                            <td>智慧</td>
+                            <td>敬畏神，並活出真理</td>
+                            <td>Fear God and live out truth</td>
+                        </tr>
+                        <tr>
+                            <td>目標函數</td>
+                            <td>榮耀神、愛神愛人、完成呼召</td>
+                            <td>Glorify God, love God and neighbor, fulfill calling</td>
+                        </tr>
+                        <tr>
+                            <td>最終收斂</td>
+                            <td>萬有在基督裡歸一，神的國完全實現</td>
+                            <td>All things reconciled in Christ, God's kingdom fully realized</td>
+                        </tr>
+                    </table>
+
+                    <div class="bilingual-section" style="margin-top: 30px;">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">核心差異在於：
+
+在智慧系統中：資訊 → 世界 → 智慧 → 回到母體
+
+在基督信仰中：神 → 道（Logos）→ 創造 → 世界 → 恩典更新 → 越來越像基督 → 萬有歸於神
+
+最大的區別是：資訊很重要，但它是受造秩序的一部分。真正的最高本體不是資訊，而是創造並維繫萬有的神。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">The core difference lies in:
+
+In the wisdom system: Information → World → Wisdom → Return to Source
+
+In Christian faith: God → Logos → Creation → World → Grace Renewal → Becoming More Like Christ → All Things Returned to God
+
+The fundamental distinction is: Information is important, but it is part of the created order. The true ultimate source is not information, but God who creates and sustains all things.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="card-title">最終總結</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="card-content">
+                    <div class="bilingual-section">
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇹🇼 中文</div>
+                            <div class="chinese-text">真正成熟的信仰，
+不是知道更多宗教知識。
+而是生命越來越對齊神的旨意。
+
+真正的自由，
+不是想做什麼就做什麼。
+而是越來越能活出自己的呼召。
+
+真正的智慧，
+不是證明自己多屬靈。
+而是每天都願意接受真理的光照。
+修正生命模型。
+持續長成神起初創造我們所盼望的樣式。
+
+生命的高維任務，就是在熵增的世界中，建立局部逆熵。
+在神的恩典與聖靈的工作中，讓生命不斷被更新。
+活出真理、愛與盼望。
+參與神對受造世界的恢復與更新。
+完成自己的呼召。
+榮耀神。
+越來越像基督。</div>
+                        </div>
+
+                        <div class="bilingual-pair">
+                            <div class="lang-label">🇬🇧 English</div>
+                            <div class="english-text">True spiritual maturity
+is not knowing more religious facts.
+It is life increasingly aligning with God's purpose.
+
+True freedom
+is not doing whatever you want.
+It is increasingly living out your calling.
+
+True wisdom
+is not proving yourself spiritual.
+But willingly receiving truth's illumination each day.
+Correcting your life model.
+Continuously growing into the form God originally hoped for us.
+
+Life's high-dimensional task is establishing local anti-entropy in an entropic world.
+In God's grace and the Holy Spirit's work, letting life be continuously renewed.
+Living out truth, love, and hope.
+Participating in God's restoration and renewal of creation.
+Fulfilling your calling.
+Glorifying God.
+Becoming increasingly like Christ.</div>
+                            <div class="tts-section">
+                                <button class="tts-button" onclick="speakSection(this)">🔊 播放英文</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>基督和人生 | Christ and Life: A Wisdom Generation System in Faith</p>
+        <p>補充不足 · 精準表達 | Supplement Deficiency · Express Precisely</p>
+        <p>所有資料全雙語呈現 | All Content in Bilingual | 英文可發聲 | English with Text-to-Speech</p>
+        <p>2026 | Made with faith, wisdom, and love</p>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleCard(cardElement) {
+            cardElement.classList.toggle('expanded');
+        }
+
+        function speakSection(button) {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+
+                // 找到最近的英文文本
+                let englishElement = button.closest('.bilingual-pair').querySelector('.english-text');
+                let text = englishElement.textContent.trim();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                button.classList.add('playing');
+                const originalText = button.textContent;
+                button.textContent = '🔊 播放中...';
+
+                utterance.onend = () => {
+                    button.classList.remove('playing');
+                    button.textContent = originalText;
+                };
+
+                utterance.onerror = () => {
+                    button.classList.remove('playing');
+                    button.textContent = originalText;
+                };
+
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('您的瀏覽器不支援語音功能');
+            }
+        }
+    </script>
+</body>
+</html>
