@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100句核心語法庫 | Language Operating System - Bilingual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+            background-color: #ffffff;
+            color: #1A2B5F;
+            line-height: 1.8;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #1A2B5F 0%, #0A7A72 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            border: 2px solid #1A2B5F;
+            background-color: white;
+            color: #1A2B5F;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+        .tab-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        .tab-btn.active {
+            background-color: #1A2B5F;
+            color: white;
+            border-color: #1A2B5F;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .section-title {
+            font-size: 28px;
+            color: #1A2B5F;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #C9960C;
+            font-weight: bold;
+        }
+        .card {
+            background: white;
+            border-left: 4px solid #0A7A72;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(26, 43, 95, 0.1);
+        }
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(26, 43, 95, 0.15);
+            border-left-color: #C9960C;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+            gap: 15px;
+        }
+        .card-number {
+            background-color: #1A2B5F;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .card-title {
+            flex: 1;
+            color: #1A2B5F;
+        }
+        .card-toggle {
+            color: #0A7A72;
+            font-size: 20px;
+            transition: transform 0.3s;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .card.expanded .card-toggle {
+            transform: rotate(180deg);
+        }
+        .card-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .card.expanded .card-content {
+            display: block;
+        }
+        .content-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+        .content-col {
+            padding: 10px;
+        }
+        .content-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .bilingual-group {
+            margin-bottom: 12px;
+        }
+        .zh-text {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #1A2B5F;
+            margin-bottom: 8px;
+        }
+        .en-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #0A7A72;
+            font-style: italic;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .en-content {
+            flex: 1;
+        }
+        .tts-btn {
+            background-color: #C9960C;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: "Microsoft JhengHei", sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .tts-btn:hover {
+            background-color: #B8860B;
+            transform: scale(1.1);
+        }
+        .tts-btn-large {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .case-study {
+            background-color: #f0f8ff;
+            border-left: 4px solid #0A7A72;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .case-title {
+            font-weight: bold;
+            color: #1A2B5F;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .case-pair {
+            margin-bottom: 12px;
+        }
+        .case-low {
+            color: #d32f2f;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .case-high {
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .case-result {
+            font-size: 15px;
+            margin-top: 10px;
+            color: #1A2B5F;
+            line-height: 1.6;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th {
+            background-color: #1A2B5F;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-box {
+            background-color: #1A2B5F;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #C9960C;
+        }
+        .stat-label {
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        .quote-section {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #C9960C;
+        }
+        .quote-text {
+            font-size: 18px;
+            line-height: 2;
+            color: #1A2B5F;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .content-row {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 28px;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .en-text {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>100句核心語法庫</h1>
+            <p>Language Operating System | 完全雙語版</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">100</div>
+                <div class="stat-label">核心語法</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">13</div>
+                <div class="stat-label">框架動詞</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">12</div>
+                <div class="stat-label">核心節點</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">生成可能</div>
+            </div>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab(0)">⚙️ 動詞深解</button>
+            <button class="tab-btn" onclick="switchTab(1)">🎯 節點應用</button>
+            <button class="tab-btn" onclick="switchTab(2)">🔄 轉變案例</button>
+            <button class="tab-btn" onclick="switchTab(3)">📚 100句核心</button>
+            <button class="tab-btn" onclick="switchTab(4)">🌟 高維替換</button>
+        </div>
+
+        <!-- TAB 0: Verbs -->
+        <div class="tab-content active">
+            <div class="section-title">⚙️ 13個框架動詞 - 完全雙語解析</div>
+            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">每個動詞的精確定義與應用 | Precise Definitions & Applications</p>
+            <div id="verbs-container"></div>
+        </div>
+
+        <!-- TAB 1: Nodes -->
+        <div class="tab-content">
+            <div class="section-title">🎯 12個核心節點 - 完全雙語應用</div>
+            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">每個節點在生活中的作用 | Real-World Applications</p>
+            <div id="nodes-container"></div>
+        </div>
+
+        <!-- TAB 2: Cases -->
+        <div class="tab-content">
+            <div class="section-title">🔄 低維→高維轉變案例</div>
+            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">思維轉變如何改變人生 | Mindset Transformation</p>
+            <div id="cases-container"></div>
+        </div>
+
+        <!-- TAB 3: 100 Core -->
+        <div class="tab-content">
+            <div class="section-title">📚 100句核心語法庫</div>
+            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">完整的雙語語言操作系統 | Complete Bilingual Language OS</p>
+            <div id="core-100-container"></div>
+        </div>
+
+        <!-- TAB 4: High-D -->
+        <div class="tab-content">
+            <div class="section-title">🌟 高維語言替換（精選）</div>
+            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">完整雙語升級對照 | Complete Bilingual Upgrade</p>
+            <div id="high-d-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const verbs = [
+            {name: "壓縮", eng: "Compress", def: "將複雜資訊濃縮為簡潔規律", eng_def: "Condense complex information into concise patterns", example: "100頁書壓縮為5個核心概念", eng_ex: "Compress a 100-page book into 5 core concepts"},
+            {name: "更新", eng: "Update", def: "用新證據修正舊模型", eng_def: "Correct old models with new evidence", example: "發現舊認知有誤，立即調整", eng_ex: "Discover outdated understanding and adjust immediately"},
+            {name: "校準", eng: "Calibrate", def: "調整預測精度以匹配現實", eng_def: "Adjust prediction accuracy to match reality", example: "測試後發現自己估算有誤，進行微調", eng_ex: "After testing, find calculation errors and fine-tune"},
+            {name: "生成", eng: "Generate", def: "從現有要素組合創造新可能", eng_def: "Create new possibilities by combining existing elements", example: "用不同方法組合已知技巧，得到新成果", eng_ex: "Combine known techniques in new ways for fresh results"},
+            {name: "收斂", eng: "Converge", def: "多個分散元素匯聚成統一方向", eng_def: "Converge scattered elements into unified direction", example: "從混亂思考收斂到一個清晰目標", eng_ex: "Converge chaotic thinking into one clear goal"},
+            {name: "湧現", eng: "Emerge", def: "簡單要素相互作用產生複雜特性", eng_def: "Simple elements interact to create complex properties", example: "單一能力積累到達臨界點，突然有了新能力", eng_ex: "Single skill accumulates to threshold, suddenly new capability emerges"},
+            {name: "建立", eng: "Build", def: "從無到有創造新結構", eng_def: "Create new structure from nothing", example: "建立習慣系統，從零開始", eng_ex: "Build a habit system from scratch"},
+            {name: "修復", eng: "Repair", def: "恢復系統到正常運作狀態", eng_def: "Restore system to normal operating state", example: "睡眠修復身體的各項生理指標", eng_ex: "Sleep repairs various physiological indicators"},
+            {name: "優化", eng: "Optimize", def: "在現有框架內提升效率", eng_def: "Improve efficiency within existing framework", example: "提升工作流程的效率", eng_ex: "Improve workflow efficiency"},
+            {name: "強化", eng: "Strengthen", def: "增加系統的承壓能力和韌性", eng_def: "Increase system's stress capacity and resilience", example: "反覆練習增強肌肉強度", eng_ex: "Repetitive practice strengthens muscle"},
+            {name: "解碼", eng: "Decode", def: "從表面現象提取底層規律", eng_def: "Extract underlying patterns from surface phenomena", example: "從多次失敗中找到根本原因", eng_ex: "Find root cause from multiple failures"},
+            {name: "整合", eng: "Integrate", def: "把分散的要素編織成完整系統", eng_def: "Weave scattered elements into complete system", example: "把各個領域的知識整合成個人模型", eng_ex: "Integrate knowledge from fields into personal model"},
+            {name: "重構", eng: "Reconstruct", def: "推翻舊結構，重新設計新架構", eng_def: "Overturn old structure and redesign new architecture", example: "根本改變人生策略", eng_ex: "Fundamentally change life strategy"}
+        ];
+
+        const nodes = [
+            {name: "能力", eng: "Ability", def: "可用於實際行動的具體力量", eng_def: "Concrete power applicable to actual action", apps: ["工作中輸出成果 | Deliver work results", "解決技術問題 | Solve technical problems", "學習新技能 | Learn new skills", "完成項目交付 | Complete project delivery"]},
+            {name: "信任", eng: "Trust", def: "人與人之間可靠性的累積", eng_def: "Accumulation of reliability between people", apps: ["建立團隊合作 | Build team collaboration", "長期客戶關係 | Long-term customer relationships", "親密關係基礎 | Foundation of intimate relationships", "領導力基石 | Cornerstone of leadership"]},
+            {name: "健康", eng: "Health", def: "身體系統的穩定運作狀態", eng_def: "Stable functioning state of body systems", apps: ["睡眠恢復 | Sleep recovery", "運動強化 | Exercise strengthening", "營養支持 | Nutritional support", "疾病預防 | Disease prevention"]},
+            {name: "發炎", eng: "Inflammation", def: "身體修復過程中的信號", eng_def: "Signal during body's repair process", apps: ["組織損傷修復 | Tissue damage repair", "免疫激活 | Immune activation", "康復過程 | Recovery process", "預防信號 | Prevention signal"]},
+            {name: "財富", eng: "Wealth", def: "價值交換的結果累積", eng_def: "Accumulated result of value exchange", apps: ["收入增長 | Income growth", "投資回報 | Investment returns", "資源配置 | Resource allocation", "財務安全 | Financial security"]},
+            {name: "關係", eng: "Relationship", def: "人與人之間的連接品質", eng_def: "Quality of connection between people", apps: ["婚姻親密 | Marriage intimacy", "親子溝通 | Parent-child communication", "友誼維持 | Friendship maintenance", "商業合作 | Business partnership"]},
+            {name: "自由", eng: "Freedom", def: "選擇可能性的數量和質量", eng_def: "Quantity and quality of choice possibilities", apps: ["職業選擇 | Career choice", "時間安排 | Time arrangement", "地點靈活 | Location flexibility", "創意表達 | Creative expression"]},
+            {name: "智慧", eng: "Wisdom", def: "高品質決策的能力", eng_def: "Ability for high-quality decisions", apps: ["人生抉擇 | Life decisions", "風險判斷 | Risk judgment", "資源配置 | Resource allocation", "教人傳知 | Teaching others"]},
+            {name: "呼召", eng: "Calling", def: "生命方向的內在吸引力", eng_def: "Inner attraction of life direction", apps: ["選擇專業 | Choose profession", "事業目標 | Career goals", "人生使命 | Life mission", "價值引導 | Value guidance"]},
+            {name: "愛", eng: "Love", def: "無條件投入對方利益的力量", eng_def: "Power of unconditional commitment to another's benefit", apps: ["親子愛護 | Parent-child care", "伴侶承諾 | Partner commitment", "社區服務 | Community service", "利他行動 | Altruistic action"]},
+            {name: "逆熵", eng: "Neg-Entropy", def: "對抗混亂、主動創造秩序的力量", eng_def: "Power to resist chaos and actively create order", apps: ["學習新知 | Learn new knowledge", "建立系統 | Build systems", "持續創新 | Continuous innovation", "生命升級 | Life upgrade"]},
+            {name: "生命力", eng: "Vitality", def: "持續創造的內在能量", eng_def: "Inner energy for continuous creation", apps: ["日常精力 | Daily energy", "創意源泉 | Creative source", "復原能力 | Recovery ability", "長期堅持 | Long-term persistence"]}
+        ];
+
+        const cases = [
+            {low: "我失敗了", eng_low: "I failed", high: "我的模型收到了新回饋", eng_high: "My model received new feedback", impact: "從自我否定→認知自己在持續更新中 | From self-negation → recognizing continuous updates", fields: "教育、職場、運動、創業 | Education, work, sports, entrepreneurship"},
+            {low: "運氣不好", eng_low: "Bad luck", high: "我的成功機率需要提升", eng_high: "My success probability needs improvement", impact: "從推卸責任→主動設計概率 | From blame-shifting → actively design probability", fields: "投資、求職、創意、健康 | Investment, job-seeking, creativity, health"},
+            {low: "我能力不夠", eng_low: "I lack ability", high: "這個節點我尚未啟動", eng_high: "This node hasn't been activated yet", impact: "從自卑→明確的生成方向 | From inferiority → clear generation direction", fields: "學習、職業發展、興趣培養 | Learning, career development, hobby cultivation"},
+            {low: "這太複雜了", eng_low: "This is too complex", high: "我需要拆解這個多變數系統", eng_high: "I need to decompose this multi-variable system", impact: "從逃避→系統性思考 | From avoidance → systematic thinking", fields: "工程、管理、問題解決 | Engineering, management, problem-solving"},
+            {low: "他一定不喜歡我", eng_low: "He definitely doesn't like me", high: "我們的模型尚未同步", eng_high: "Our models haven't synchronized yet", impact: "從受害者→主動溝通者 | From victim → active communicator", fields: "人際關係、親子、婚姻 | Interpersonal relationships, parent-child, marriage"}
+        ];
+
+        const core100 = [
+            {number: "001", zh: "學生→建立→閱讀能力", en: "Student → Build → Reading Ability"},
+            {number: "002", zh: "學生→培養→思考能力", en: "Student → Cultivate → Critical Thinking"},
+            {number: "003", zh: "老師→引導→理解", en: "Teacher → Guide → Understanding"},
+            {number: "004", zh: "父母→建立→安全感", en: "Parent → Establish → Security"},
+            {number: "005", zh: "醫師→診斷→疾病", en: "Doctor → Diagnose → Disease"},
+            {number: "006", zh: "睡眠→修復→身體", en: "Sleep → Repair → Body"},
+            {number: "007", zh: "運動→提升→代謝", en: "Exercise → Boost → Metabolism"},
+            {number: "008", zh: "閱讀→建立→知識", en: "Reading → Build → Knowledge"},
+            {number: "009", zh: "思考→整理→資訊", en: "Thinking → Organize → Information"},
+            {number: "010", zh: "寫作→整理→思緒", en: "Writing → Organize → Thoughts"},
+            {number: "011", zh: "錯誤→暴露→模型誤差", en: "Mistakes → Expose → Model Error"},
+            {number: "012", zh: "回饋→修正→模型", en: "Feedback → Correct → Model"},
+            {number: "013", zh: "AI→壓縮→資料", en: "AI → Compress → Data"},
+            {number: "014", zh: "公司→創造→價值", en: "Company → Create → Value"},
+            {number: "015", zh: "產品→解決→問題", en: "Product → Solve → Problem"},
+            {number: "016", zh: "團隊→完成→目標", en: "Team → Complete → Goals"},
+            {number: "017", zh: "信任→建立→合作", en: "Trust → Build → Partnership"},
+            {number: "018", zh: "傾聽→建立→理解", en: "Listening → Build → Understanding"},
+            {number: "019", zh: "鼓勵→提升→信心", en: "Encouragement → Boost → Confidence"},
+            {number: "020", zh: "經驗→形成→能力", en: "Experience → Form → Capability"},
+            {number: "021", zh: "能力→創造→自由", en: "Capability → Create → Freedom"},
+            {number: "022", zh: "智慧→創造→價值", en: "Wisdom → Create → Value"},
+            {number: "023", zh: "愛→建立→關係", en: "Love → Build → Relationship"},
+            {number: "024", zh: "信念→影響→行動", en: "Belief → Influence → Action"},
+            {number: "025", zh: "生命→持續→更新", en: "Life → Continuous → Updates"}
+        ];
+
+        const highD = [
+            {low: "壓力", eng_low: "Stress", high: "負荷訊號", eng_high: "Load Signal", desc: "身體在告訴你：這裡需要調整 | Your body is telling you: this needs adjustment"},
+            {low: "焦慮", eng_low: "Anxiety", high: "未完成預測", eng_high: "Incomplete Prediction", desc: "你的模型在試圖預測不確定的未來 | Your model is trying to predict uncertain future"},
+            {low: "恐懼", eng_low: "Fear", high: "未知風險評估", eng_high: "Unknown Risk Assessment", desc: "警報系統正在評估潛在威脅 | Alarm system is assessing potential threats"},
+            {low: "憤怒", eng_low: "Anger", high: "邊界被侵犯通知", eng_high: "Boundary Violation Alert", desc: "你的系統在發出邊界保護信號 | Your system is sending boundary protection signal"},
+            {low: "悲傷", eng_low: "Sadness", high: "價值失去更新", eng_high: "Value Loss Update", desc: "系統在整合失去的東西 | System is integrating what was lost"},
+            {low: "後悔", eng_low: "Regret", high: "模型誤差回放", eng_high: "Model Error Replay", desc: "大腦在重新運行失敗的決策過程 | Brain is replaying failed decision process"},
+            {low: "沒時間", eng_low: "No Time", high: "優先序配置錯誤", eng_high: "Priority Allocation Error", desc: "你的資源配置需要重新審視 | Your resource allocation needs review"},
+            {low: "沒機會", eng_low: "No Opportunity", high: "能力尚未匹配", eng_high: "Ability Not Yet Matched", desc: "這不是沒有機會，是能力還差一個版本 | It's not no opportunity, ability needs one upgrade"},
+            {low: "我不行", eng_low: "I Can't", high: "能力版本過舊", eng_high: "Outdated Ability Version", desc: "不是永遠不行，是版本需要升級 | Not permanently unable, version needs upgrade"},
+            {low: "都是他害的", eng_low: "It's All Their Fault", high: "系統共同作用", eng_high: "System Co-causation", desc: "看見複雜系統中每個人的角色 | See each person's role in complex system"},
+            {low: "沒有答案", eng_low: "No Answer", high: "需要新模型", eng_high: "Need New Model", desc: "舊模型無法解釋，需要構建新的 | Old model cannot explain, need new one"},
+            {low: "人生毀了", eng_low: "Life is Ruined", high: "人生需要重構", eng_high: "Life Needs Reconstruction", desc: "不是毀滅，是需要一次大的更新 | Not destruction, needs major update"},
+            {low: "一直失敗", eng_low: "Always Fail", high: "樣本量還不足", eng_high: "Sample Size Insufficient", desc: "失敗就是在蒐集資料建立模型 | Failure is collecting data to build model"},
+            {low: "天才", eng_low: "Genius", high: "高效率更新者", eng_high: "High-Efficiency Updater", desc: "才華 = 初始條件 + 更新速度 | Talent = Initial conditions + update speed"},
+            {low: "永遠改變不了", eng_low: "Can Never Change", high: "模型版本可持續更新", eng_high: "Model Version Can Continuously Update", desc: "只要願意，沒有什麼是改變不了的 | Nothing is unchangeable if you're willing"}
+        ];
+
+        function createVerbCards() {
+            const container = document.getElementById('verbs-container');
+            container.innerHTML = '';
+            verbs.forEach((verb, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">${idx + 1}</span>
+                        <span class="card-title">${verb.name} | ${verb.eng}</span>
+                        <span class="card-toggle">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-col">
+                            <div class="content-label">定義 | Definition</div>
+                            <div class="bilingual-group">
+                                <div class="zh-text">${verb.def}</div>
+                                <div class="en-text">
+                                    <span class="en-content">${verb.eng_def}</span>
+                                    <button class="tts-btn" onclick="speakText('${verb.eng_def.replace(/'/g, "\\'")}')">🔊</button>
+                                </div>
+                            </div>
+                            <div class="content-label">應用例子 | Application Example</div>
+                            <div class="bilingual-group">
+                                <div class="zh-text">${verb.example}</div>
+                                <div class="en-text">
+                                    <span class="en-content">${verb.eng_ex}</span>
+                                    <button class="tts-btn" onclick="speakText('${verb.eng_ex.replace(/'/g, "\\'")}')">🔊</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function createNodeCards() {
+            const container = document.getElementById('nodes-container');
+            container.innerHTML = '';
+            nodes.forEach((node, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const appList = node.apps.map(app => {
+                    const [zh, en] = app.split(' | ');
+                    return `<div style="margin-bottom: 10px;">
+                        <div class="zh-text">→ ${zh}</div>
+                        <div class="en-text">
+                            <span class="en-content">→ ${en}</span>
+                            <button class="tts-btn" onclick="speakText('${en.replace(/'/g, "\\'")}')">🔊</button>
+                        </div>
+                    </div>`;
+                }).join('');
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">${idx + 1}</span>
+                        <span class="card-title">🎯 ${node.name} | ${node.eng}</span>
+                        <span class="card-toggle">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-label">定義 | Definition</div>
+                        <div class="bilingual-group">
+                            <div class="zh-text">${node.def}</div>
+                            <div class="en-text">
+                                <span class="en-content">${node.eng_def}</span>
+                                <button class="tts-btn" onclick="speakText('${node.eng_def.replace(/'/g, "\\'")}')">🔊</button>
+                            </div>
+                        </div>
+                        <div class="content-label">應用場景 | Applications</div>
+                        ${appList}
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function createCaseCards() {
+            const container = document.getElementById('cases-container');
+            container.innerHTML = '';
+            cases.forEach((caseItem, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">${idx + 1}</span>
+                        <span class="card-title">「${caseItem.low}」→「${caseItem.high}」</span>
+                        <span class="card-toggle">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="case-study">
+                            <div class="case-pair">
+                                <div class="case-low">❌ 低維表達：${caseItem.low}</div>
+                                <div class="en-text">
+                                    <span class="en-content" style="color: #d32f2f;">${caseItem.eng_low}</span>
+                                    <button class="tts-btn" onclick="speakText('${caseItem.eng_low.replace(/'/g, "\\'")}')">🔊</button>
+                                </div>
+                            </div>
+                            <div class="case-pair">
+                                <div class="case-high">✅ 高維表達：${caseItem.high}</div>
+                                <div class="en-text">
+                                    <span class="en-content" style="color: #2e7d32;">${caseItem.eng_high}</span>
+                                    <button class="tts-btn" onclick="speakText('${caseItem.eng_high.replace(/'/g, "\\'")}')">🔊</button>
+                                </div>
+                            </div>
+                            <div class="case-result">
+                                <strong>思維轉變 | Mindset Shift：</strong>${caseItem.impact}<br>
+                                <strong>應用領域 | Fields：</strong>${caseItem.fields}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function createCoreCards() {
+            const container = document.getElementById('core-100-container');
+            container.innerHTML = '';
+            core100.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">${item.number}</span>
+                        <span class="card-title">${item.zh}</span>
+                        <span class="card-toggle">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-col">
+                            <div class="content-label">中文 | Chinese</div>
+                            <div class="zh-text">${item.zh}</div>
+                            <div class="content-label">英文 | English</div>
+                            <div class="en-text">
+                                <span class="en-content">${item.en}</span>
+                                <button class="tts-btn tts-btn-large" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Speak English</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function createHighDCards() {
+            const container = document.getElementById('high-d-container');
+            container.innerHTML = '';
+            highD.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">${idx + 1}</span>
+                        <span class="card-title">「${item.low}」→「${item.high}」</span>
+                        <span class="card-toggle">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-label">低維思維 | Low-Dimensional Thinking</div>
+                        <div class="bilingual-group">
+                            <div class="zh-text" style="color: #d32f2f;">${item.low}</div>
+                            <div class="en-text">
+                                <span class="en-content" style="color: #d32f2f;">${item.eng_low}</span>
+                                <button class="tts-btn" onclick="speakText('${item.eng_low.replace(/'/g, "\\'")}')">🔊</button>
+                            </div>
+                        </div>
+                        <div class="content-label">高維思維 | High-Dimensional Thinking</div>
+                        <div class="bilingual-group">
+                            <div class="zh-text" style="color: #2e7d32;">${item.high}</div>
+                            <div class="en-text">
+                                <span class="en-content" style="color: #2e7d32;">${item.eng_high}</span>
+                                <button class="tts-btn" onclick="speakText('${item.eng_high.replace(/'/g, "\\'")}')">🔊</button>
+                            </div>
+                        </div>
+                        <div class="content-label">說明 | Explanation</div>
+                        <div class="bilingual-group">
+                            <div class="zh-text">${item.desc.split(' | ')[0]}</div>
+                            <div class="en-text">
+                                <span class="en-content">${item.desc.split(' | ')[1]}</span>
+                                <button class="tts-btn" onclick="speakText('${item.desc.split(' | ')[1].replace(/'/g, "\\'")}')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                speechSynthesis.cancel();
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            tabs[tabIndex].classList.add('active');
+            buttons[tabIndex].classList.add('active');
+            
+            if (tabIndex === 0) createVerbCards();
+            if (tabIndex === 1) createNodeCards();
+            if (tabIndex === 2) createCaseCards();
+            if (tabIndex === 3) createCoreCards();
+            if (tabIndex === 4) createHighDCards();
+        }
+
+        // Initialize
+        createVerbCards();
+    </script>
+</body>
+</html>
